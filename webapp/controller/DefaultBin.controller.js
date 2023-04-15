@@ -30,9 +30,6 @@ sap.ui.define([
 			this.setModel(PackingMode, "packingMode");
 
 			this.setBusy(true);
-			// if (Util.isEmpty(Global.getWarehouseNumber())) {
-			// 	this.displayWarehouseMissedMessage();
-			// }
 			var oRunTimePromise = Service.getRuntimeEnvironment()
 				.then(function (aResult) {
 					if (Util.isEmpty(Global.getWarehouseNumber())) {
@@ -68,11 +65,6 @@ sap.ui.define([
 			this.getOwnerComponent().getShellUIService().setBackNavigation();
 		},
 
-		// bindPackingStationSet: function (sWorkStation) {
-		// 	var oView = this.getView();
-		// 	oView.bindElement("/PackingStationSet(EWMWarehouse='" + Global.getWarehouseNumber() + "',EWMWorkCenter='" + sWorkStation + "',EWMStorageBin='')");
-		// },
-
 		bindWorkCenter: function (sWorkStation) {
 			this.byId(workCenterInputId).bindElement({
 				path: "/PackingStationSet(EWMWarehouse='" + Global.getWarehouseNumber() + "',EWMWorkCenter='" + sWorkStation + "',EWMStorageBin='')"
@@ -84,12 +76,6 @@ sap.ui.define([
 				path: "/PackingStationSet(EWMWarehouse='" + Global.getWarehouseNumber() + "',EWMWorkCenter='" + sWorkStation + "',EWMStorageBin='')"
 			});
 		},
-
-		// bindFeatureSelection: function () {
-		// 	this.byId(featureSelectionId).bindElement({
-		// 		path: "/PackModeSet"
-		// 	});
-		// },
 
 		initPackingMode: function () {
 			var vPackMode = this.getOwnerComponent().getComponentData().startupParameters.PackMode;
