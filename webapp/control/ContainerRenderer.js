@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
- */
 // Provides default renderer for control ui.control.Container
 sap.ui.define([], function() {
 	"use strict";

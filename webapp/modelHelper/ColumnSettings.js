@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
- */
 sap.ui.define([
 	"zscm/ewm/packoutbdlvs1/utils/Util",
 	"zscm/ewm/packoutbdlvs1/utils/Const"
