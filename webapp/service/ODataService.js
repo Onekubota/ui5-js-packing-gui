@@ -235,6 +235,8 @@ sap.ui.define([
 						if (!Util.isEmpty(oODO)) {
 							oItem.CustomerName = oODO.CustomerName;
 							oItem.PackInstr = oODO.PackInstr;
+							oItem.ShipToAddress = oODO.ShipToAddress;
+							oItem.CarrierService = oODO.CarrierService;
 						}
 					});
 					return aItems;

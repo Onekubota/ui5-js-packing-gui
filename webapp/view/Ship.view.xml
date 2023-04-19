@@ -115,6 +115,7 @@
 				</OverflowToolbar>
 			</headerToolbar>
 			<columns>
+				<Column id="pod---ship--column--text--dlv"><Text text="{i18n>dlv}" id="pod---ship--text--dlv"/></Column>
 				<Column id="pod---ship--column--text--productid"><Text text="{i18n>productID}" id="pod---ship--text--productid"/></Column>
 				<Column id="pod---ship--column--text--productdesc"><Text text="{i18n>productDesc}" id="pod---ship--text--productdesc"/></Column>
 				<Column id="pod---ship--column--text--qyt" hAlign="End" width="5rem"><Text text="{i18n>quantity}" id="pod---ship--text--qyt"/></Column>
@@ -133,6 +134,7 @@
 			<items>
 				<ColumnListItem id="pod---ship--columnlistitem" highlight="{itemModel>Status}" press="onHighlightColumnListItem" type="Active">
 					<cells>
+						<Text text="{itemModel>EWMRefDeliveryDocumentNumber}" id="pod---ship--columnlistitem--dlv"></Text>
 						<Text text="{itemModel>ProductName}" id="pod---ship--columnlistitem--product"></Text>
 						<Text text="{itemModel>ProductDesc}" id="pod---ship--columnlistitem--productdesc"></Text>
 						<Text text="{itemModel>AlterQuan}" id="pod---ship--columnlistitem--altqty"></Text>

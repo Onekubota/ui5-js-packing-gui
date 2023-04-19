@@ -68,7 +68,7 @@
 					</f:layout>
 					<f:formContainers>
 						<f:FormContainer id="product-info">
-							<f:formElements id="pod---source--formelements">
+							<f:formElements>
 								<f:FormElement id="pod---source--formelement--product--info">
 									<f:label>
 										<Label text="{i18n>productID}" id="pod---source--product--label" wrapping="true"></Label>
@@ -89,14 +89,26 @@
 										<Text text="{itemModel>EWMRefDeliveryDocumentNumber}" id="id-outbound-devlivery-order"/>
 									</f:fields>
 								</f:FormElement>
-								<f:FormElement id="pod---source--formelement--customer">
+								<f:FormElement id="pod---source--formelement--shipto">
 									<f:label>
-										<Label text="{i18n>customer}" id="pod---source--customer--label" wrapping="true"></Label>
+										<Label text="{i18n>shipToAddress}" id="pod---source--shipto--label" wrapping="true"></Label>
 									</f:label>
 									<f:fields>
-										<Text text="{itemModel>CustomerName}" id="id-customer"/>
+										<Text text="{itemModel>ShipToAddress}" id="id-shipto"/>
 									</f:fields>
 								</f:FormElement>
+
+								
+								<f:FormElement id="pod---source--formelement--carrier">
+									<f:label>
+										<Label text="{i18n>carrier}" id="pod---source--carrier--label" wrapping="true"></Label>
+									</f:label>
+									<f:fields>
+										<Text text="{itemModel>CarrierService}" id="id-carrier"/>
+									</f:fields>
+								</f:FormElement>
+
+
 								<f:FormElement id="ProductHandlingInstr">
 									<f:label>
 										<Label text="{i18n>handlingInstruction}" id="pod---source--hanldingunit--label" wrapping="true"></Label>
@@ -132,6 +144,7 @@
 				</OverflowToolbar>
 			</headerToolbar>
 			<columns>
+				<Column id="pod---source--column--dlv" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>dlv}" id="pod---source--dlv"/></Column>
 				<Column id="pod---source--column--product"><Text id="pod---source--product" text="{i18n>productID}"/></Column>
 				<Column id="pod---source--column--productdesc"><Text id="pod---source--productdesc" text="{i18n>productDesc}"/></Column>
 				<Column id="pod---source--column--qty" hAlign="End" width="5rem"><Text text="{i18n>quantity}" id="pod---source---qty"/></Column>
@@ -150,6 +163,7 @@
 			<items>
 				<ColumnListItem highlight="{itemModel>Status}" press="onSourceItemPressed" type="Active" id="pod---source--columnlistitem" >
 					<cells>
+						<Text text="{itemModel>EWMRefDeliveryDocumentNumber}" id="pod---source--cell--dlv"></Text>
 						<Text text="{itemModel>ProductName}" id="pod---source--cell--product" ></Text>
 						<Text text="{itemModel>ProductDesc}" id="pod---source--cell--productdesc" ></Text>
 						<Text text="{itemModel>AlterQuan}" id="pod---source--cell--qty"></Text>

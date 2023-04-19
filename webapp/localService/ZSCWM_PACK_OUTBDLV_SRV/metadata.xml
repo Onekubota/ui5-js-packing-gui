@@ -9,6 +9,22 @@
     <edmx:DataServices m:DataServiceVersion="2.0">
         <Schema Namespace="pack_outbdlv_srv" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+            <EntityType Name="PackMode" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Mode"/>
+                </Key>
+                <Property Name="Mode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Packing Mode" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ApplicationFeatures" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="PackFeature"/>
+                    <PropertyRef Name="PackMode"/>
+                </Key>
+                <Property Name="PackFeature" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Pack Features" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PackMode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Packing Mode" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Disable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Disable" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
             <EntityType Name="HUItemWeight" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="EWMWarehouse"/>
@@ -108,6 +124,7 @@
                     <PropertyRef Name="DocumentReltdStockDocUUID"/>
                 </Key>
                 <Property Name="EWMStorageBin" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Storage Bin" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ShipToAddress" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Ship to Address" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="EWMWarehouse" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Warehouse No." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="HuId" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="HU ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Indicate Bin or HU" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -307,8 +324,8 @@
                 <Property Name="MsgKey" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Message Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="MsgType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Message Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="MsgSuccess" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=true, -=false, space=unknown)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <NavigationProperty Name="ODOs" Relationship="pack_outbdlv_srv.HuToODOs" FromRole="FromRole_HuToODOs" ToRole="ToRole_HuToODOs"/>
                 <NavigationProperty Name="Items" Relationship="pack_outbdlv_srv.HuToItems" FromRole="FromRole_HuToItems" ToRole="ToRole_HuToItems"/>
+                <NavigationProperty Name="ODOs" Relationship="pack_outbdlv_srv.HuToODOs" FromRole="FromRole_HuToODOs" ToRole="ToRole_HuToODOs"/>
             </EntityType>
             <EntityType Name="ScaleWeight" sap:content-version="1">
                 <Key>
@@ -341,18 +358,18 @@
                 <End Type="pack_outbdlv_srv.Item" Multiplicity="*" Role="ToRole_HuToItems"/>
                 <ReferentialConstraint>
                     <Principal Role="FromRole_HuToItems">
-                        <PropertyRef Name="EWMStorageBin"/>
-                        <PropertyRef Name="Type"/>
-                        <PropertyRef Name="EWMWorkCenter"/>
-                        <PropertyRef Name="EWMWarehouse"/>
                         <PropertyRef Name="HuId"/>
+                        <PropertyRef Name="EWMWarehouse"/>
+                        <PropertyRef Name="EWMWorkCenter"/>
+                        <PropertyRef Name="Type"/>
+                        <PropertyRef Name="EWMStorageBin"/>
                     </Principal>
                     <Dependent Role="ToRole_HuToItems">
-                        <PropertyRef Name="EWMStorageBin"/>
-                        <PropertyRef Name="Type"/>
-                        <PropertyRef Name="EWMWorkCenter"/>
-                        <PropertyRef Name="EWMWarehouse"/>
                         <PropertyRef Name="HuId"/>
+                        <PropertyRef Name="EWMWarehouse"/>
+                        <PropertyRef Name="EWMWorkCenter"/>
+                        <PropertyRef Name="Type"/>
+                        <PropertyRef Name="EWMStorageBin"/>
                     </Dependent>
                 </ReferentialConstraint>
             </Association>
@@ -361,18 +378,18 @@
                 <End Type="pack_outbdlv_srv.ODO" Multiplicity="*" Role="ToRole_HuToODOs"/>
                 <ReferentialConstraint>
                     <Principal Role="FromRole_HuToODOs">
-                        <PropertyRef Name="EWMStorageBin"/>
-                        <PropertyRef Name="Type"/>
-                        <PropertyRef Name="EWMWorkCenter"/>
-                        <PropertyRef Name="EWMWarehouse"/>
                         <PropertyRef Name="HuId"/>
+                        <PropertyRef Name="EWMWarehouse"/>
+                        <PropertyRef Name="EWMWorkCenter"/>
+                        <PropertyRef Name="Type"/>
+                        <PropertyRef Name="EWMStorageBin"/>
                     </Principal>
                     <Dependent Role="ToRole_HuToODOs">
-                        <PropertyRef Name="EWMStorageBin"/>
-                        <PropertyRef Name="Type"/>
-                        <PropertyRef Name="EWMWorkCenter"/>
-                        <PropertyRef Name="EWMWarehouse"/>
                         <PropertyRef Name="HuId"/>
+                        <PropertyRef Name="EWMWarehouse"/>
+                        <PropertyRef Name="EWMWorkCenter"/>
+                        <PropertyRef Name="Type"/>
+                        <PropertyRef Name="EWMStorageBin"/>
                     </Dependent>
                 </ReferentialConstraint>
             </Association>
@@ -381,18 +398,20 @@
                 <End Type="pack_outbdlv_srv.PackMat" Multiplicity="*" Role="ToRole_PackingStationToPackMats"/>
                 <ReferentialConstraint>
                     <Principal Role="FromRole_PackingStationToPackMats">
-                        <PropertyRef Name="EWMWorkCenter"/>
-                        <PropertyRef Name="EWMWarehouse"/>
                         <PropertyRef Name="EWMStorageBin"/>
+                        <PropertyRef Name="EWMWarehouse"/>
+                        <PropertyRef Name="EWMWorkCenter"/>
                     </Principal>
                     <Dependent Role="ToRole_PackingStationToPackMats">
-                        <PropertyRef Name="EWMWorkCenter"/>
-                        <PropertyRef Name="EWMWarehouse"/>
                         <PropertyRef Name="EWMStorageBin"/>
+                        <PropertyRef Name="EWMWarehouse"/>
+                        <PropertyRef Name="EWMWorkCenter"/>
                     </Dependent>
                 </ReferentialConstraint>
             </Association>
             <EntityContainer Name="pack_outbdlv_srv_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="PackModeSet" EntityType="pack_outbdlv_srv.PackMode" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ApplicationFeaturesSet" EntityType="pack_outbdlv_srv.ApplicationFeatures" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="HUItemWeightSet" EntityType="pack_outbdlv_srv.HUItemWeight" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="SearchHelpBinSet" EntityType="pack_outbdlv_srv.SearchHelpBin" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="SearchHelpWorkCenterSet" EntityType="pack_outbdlv_srv.SearchHelpWorkCenter" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
@@ -425,54 +444,54 @@
                     <End EntitySet="ODOSet" Role="ToRole_HuToODOs"/>
                 </AssociationSet>
                 <FunctionImport Name="ExecuteAccessCode" ReturnType="pack_outbdlv_srv.PackMessage" EntitySet="PackMessageSet" m:HttpMethod="POST">
-                    <Parameter Name="ScanStep" Type="Edm.String" Mode="In" MaxLength="2" Nullable="true"/>
-                    <Parameter Name="IntScanCode" Type="Edm.String" Mode="In" MaxLength="24"/>
-                    <Parameter Name="Quan" Type="Edm.Decimal" Mode="In" Precision="14" Scale="14" Nullable="true"/>
-                    <Parameter Name="SnList" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Exccode" Type="Edm.String" Mode="In" MaxLength="4" Nullable="true"/>
-                    <Parameter Name="ShippingHUId" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="DocumentReltdStockDocUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
-                    <Parameter Name="SourceId" Type="Edm.String" Mode="In" MaxLength="20" Nullable="true"/>
-                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
-                    <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
-                    <Parameter Name="DocumentReltdStockDocItemUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
-                    <Parameter Name="PackagingMaterial" Type="Edm.String" Mode="In" MaxLength="40" Nullable="true"/>
                     <Parameter Name="SourceType" Type="Edm.String" Mode="In" MaxLength="1" Nullable="true"/>
+                    <Parameter Name="PackagingMaterial" Type="Edm.String" Mode="In" MaxLength="40" Nullable="true"/>
+                    <Parameter Name="DocumentReltdStockDocItemUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
+                    <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="SourceId" Type="Edm.String" Mode="In" MaxLength="20" Nullable="true"/>
+                    <Parameter Name="DocumentReltdStockDocUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
+                    <Parameter Name="ShippingHUId" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Exccode" Type="Edm.String" Mode="In" MaxLength="4" Nullable="true"/>
+                    <Parameter Name="SnList" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Quan" Type="Edm.Decimal" Mode="In" Precision="14" Scale="14" Nullable="true"/>
+                    <Parameter Name="IntScanCode" Type="Edm.String" Mode="In" MaxLength="24"/>
+                    <Parameter Name="ScanStep" Type="Edm.String" Mode="In" MaxLength="2" Nullable="true"/>
                 </FunctionImport>
                 <FunctionImport Name="Print" ReturnType="pack_outbdlv_srv.PackMessage" EntitySet="PackMessageSet" m:HttpMethod="POST">
-                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
-                    <Parameter Name="HUId" Type="Edm.String" Mode="In" MaxLength="20"/>
-                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
                     <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="HUId" Type="Edm.String" Mode="In" MaxLength="20"/>
+                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
                 </FunctionImport>
                 <FunctionImport Name="ChangePackMat" ReturnType="pack_outbdlv_srv.PackMessage" EntitySet="PackMessageSet" m:HttpMethod="POST">
-                    <Parameter Name="SourceType" Type="Edm.String" Mode="In" MaxLength="1"/>
-                    <Parameter Name="ShippingHUIdNew" Type="Edm.String" Mode="In" MaxLength="20"/>
-                    <Parameter Name="SourceId" Type="Edm.String" Mode="In" MaxLength="40"/>
-                    <Parameter Name="SourcePackMat" Type="Edm.String" Mode="In" MaxLength="40"/>
-                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
-                    <Parameter Name="ShippingHUPackMat" Type="Edm.String" Mode="In" MaxLength="40" sap:label="New shipping HU packaging material"/>
-                    <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
-                    <Parameter Name="ShippingHUIdOld" Type="Edm.String" Mode="In" MaxLength="20"/>
-                    <Parameter Name="DeleteShippingHUOnly" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
                     <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
+                    <Parameter Name="DeleteShippingHUOnly" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
+                    <Parameter Name="ShippingHUIdOld" Type="Edm.String" Mode="In" MaxLength="20"/>
+                    <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="ShippingHUPackMat" Type="Edm.String" Mode="In" MaxLength="40" sap:label="New shipping HU packaging material"/>
+                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="SourcePackMat" Type="Edm.String" Mode="In" MaxLength="40"/>
+                    <Parameter Name="SourceId" Type="Edm.String" Mode="In" MaxLength="40"/>
+                    <Parameter Name="ShippingHUIdNew" Type="Edm.String" Mode="In" MaxLength="20"/>
+                    <Parameter Name="SourceType" Type="Edm.String" Mode="In" MaxLength="1"/>
                 </FunctionImport>
                 <FunctionImport Name="ValidateProduct" ReturnType="pack_outbdlv_srv.PackMessage" EntitySet="PackMessageSet" m:HttpMethod="POST">
-                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
-                    <Parameter Name="ProductName" Type="Edm.String" Mode="In" MaxLength="40"/>
-                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
                     <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="ProductName" Type="Edm.String" Mode="In" MaxLength="40"/>
+                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
                 </FunctionImport>
                 <FunctionImport Name="Pack" ReturnType="pack_outbdlv_srv.PackMessage" EntitySet="PackMessageSet" m:HttpMethod="POST">
+                    <Parameter Name="SourceType" Type="Edm.String" Mode="In" MaxLength="1"/>
+                    <Parameter Name="IsPackAll" Type="Edm.Boolean" Mode="In" sap:label="Indicator"/>
+                    <Parameter Name="PackagingMaterial" Type="Edm.String" Mode="In" MaxLength="40" Nullable="true"/>
+                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
+                    <Parameter Name="Quan" Type="Edm.Decimal" Mode="In" Precision="14" Scale="14" Nullable="true"/>
+                    <Parameter Name="SnList" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Exccode" Type="Edm.String" Mode="In" MaxLength="4" Nullable="true"/>
                     <Parameter Name="ShippingHUId" Type="Edm.String" Mode="In"/>
                     <Parameter Name="SourceId" Type="Edm.String" Mode="In" MaxLength="40"/>
-                    <Parameter Name="Exccode" Type="Edm.String" Mode="In" MaxLength="4" Nullable="true"/>
-                    <Parameter Name="SnList" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Quan" Type="Edm.Decimal" Mode="In" Precision="14" Scale="14" Nullable="true"/>
-                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
-                    <Parameter Name="PackagingMaterial" Type="Edm.String" Mode="In" MaxLength="40" Nullable="true"/>
-                    <Parameter Name="IsPackAll" Type="Edm.Boolean" Mode="In" sap:label="Indicator"/>
-                    <Parameter Name="SourceType" Type="Edm.String" Mode="In" MaxLength="1"/>
                     <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
                     <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
                     <Parameter Name="StockItemUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
@@ -499,17 +518,17 @@
                     <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
                 </FunctionImport>
                 <FunctionImport Name="UnPack" ReturnType="pack_outbdlv_srv.PackMessage" EntitySet="PackMessageSet" m:HttpMethod="POST">
+                    <Parameter Name="Quan" Type="Edm.Decimal" Mode="In" Precision="14" Scale="14" Nullable="true"/>
+                    <Parameter Name="AlternativeUnit" Type="Edm.String" Mode="In" MaxLength="3" Nullable="true" sap:label="Alternatve Unit"/>
+                    <Parameter Name="StockItemUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
                     <Parameter Name="EWMWorkCenter" Type="Edm.String" Mode="In" MaxLength="4"/>
                     <Parameter Name="SourceType" Type="Edm.String" Mode="In" MaxLength="1"/>
                     <Parameter Name="SourceId" Type="Edm.String" Mode="In" MaxLength="40"/>
+                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
                     <Parameter Name="ShippingHUId" Type="Edm.String" Mode="In"/>
                     <Parameter Name="EWMWarehouse" Type="Edm.String" Mode="In" MaxLength="4"/>
                     <Parameter Name="IsUnPackAll" Type="Edm.Boolean" Mode="In" sap:label="Indicator"/>
                     <Parameter Name="PackagingMaterial" Type="Edm.String" Mode="In" MaxLength="40" Nullable="true"/>
-                    <Parameter Name="EWMStorageBin" Type="Edm.String" Mode="In" MaxLength="18"/>
-                    <Parameter Name="StockItemUUID" Type="Edm.Guid" Mode="In" Nullable="true" sap:label="UUID"/>
-                    <Parameter Name="AlternativeUnit" Type="Edm.String" Mode="In" MaxLength="3" Nullable="true" sap:label="Alternatve Unit"/>
-                    <Parameter Name="Quan" Type="Edm.Decimal" Mode="In" Precision="14" Scale="14" Nullable="true"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotations Target="SCWM_PACK_OUTBDLV.HU" xmlns="http://docs.oasis-open.org/odata/ns/edm">
