@@ -9,6 +9,8 @@
 		<OverflowToolbar design="Transparent" height="3rem" id="pod---main---overflowtoolbar">
 			<Title id="pod---main--title" class="sapUiMediumMarginBegin"
 				text="{parts:[{path:'global>/bin'}, {path:'global>/workstation'}, {path: 'global>/warehouseNumber'}], formatter:'.formatTitle'}"></Title>
+			<ToolbarSpacer id="_IDGenToolbarSpacer1" />
+			<Button id="idBtnRateShop" text="Rate Shop" type="Ghost" visible="{= ${global>/applicationFeatures/0/disabled} === false }"/>
 		</OverflowToolbar>
 		<content>
 			<l:Grid class="sapUiTinyMargin" id="pod---main--grid" >

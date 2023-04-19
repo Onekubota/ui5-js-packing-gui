@@ -65,6 +65,13 @@
 						<OverflowToolbarLayoutData id="pod---ship--print--button" priority="NeverOverflow"/>
 					</layoutData>
 				</Button>
+				<Button id="shipall-button" text="{i18n>shipAll}" width="17%"
+					enabled="{parts:[{path:'global>/currentShipHandlingUnit'},{path:'global>/pendingTaskNumber'}] , formatter:'.formatPrintEnable'}"
+					press="onShipAll">
+					<layoutData>
+						<OverflowToolbarLayoutData id="pod---shipall--button" priority="NeverOverflow"/>
+					</layoutData>
+				</Button>
 				<Button id="unpack-all-button" text="{i18n>unpackAll}" width="17%" enabled="{global>/unpackEnable}" press="onUnpackAll">
 					<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow" id="pod---ship--unpackall--button"/>

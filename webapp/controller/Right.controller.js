@@ -559,6 +559,9 @@ sap.ui.define([
 		onPrint: function () {
 			this.getWorkFlowFactory().getPrintWorkFlow().run();
 		},
+		onShipAll: function() {
+			//#TODO
+		},
 		onRemoveClosedShipHU: function () {
 			this.getWorkFlowFactory().getShipHUCloseWorkFlow().run(true);
 		},
@@ -1264,7 +1267,8 @@ sap.ui.define([
 			if (bClosed) {
 				sText = this.getI18nText("reprint");
 			} else {
-				sText = this.getI18nText("print");
+				// sText = this.getI18nText("print");
+				sText = this.getI18nText("ship");
 			}
 			return sText;
 		},
