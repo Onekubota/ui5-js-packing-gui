@@ -107,6 +107,18 @@
 										<Text text="{itemModel>CarrierService}" id="id-carrier"/>
 									</f:fields>
 								</f:FormElement>
+								<f:FormElement id="pod---source--formelement--misccarrier" visible="{itemModel>IsMiscCarrier}">
+									<f:label>
+										<Label text="{i18n>misccarrier}" id="pod---source--misccarrier--label" wrapping="true"></Label>
+									</f:label>
+									<f:fields>
+										<HBox id="_IDGenHBox1">
+										<Text text="{= ${itemModel>MiscCarrier} }" visible="{= ${itemModel>MiscCarrier} !== ''}" id="id-misccarrier-txt"/>
+										<!-- <Input id="id-misccarrier-val" visible="{= ${itemModel>MiscCarrier} === ''}"/> -->
+										<Link id="_IDGenButton1" text="Update Misc Carrier" press="onPressMiscCarrierLink" visible="{= ${itemModel>MiscCarrier} === ''}"/>
+										</HBox>
+									</f:fields>
+								</f:FormElement>
 
 
 								<f:FormElement id="ProductHandlingInstr">

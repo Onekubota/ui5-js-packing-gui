@@ -19,10 +19,11 @@ sap.ui.define([
 	"zscm/ewm/packoutbdlvs1/workflows/Advanced/Clear",
 	"zscm/ewm/packoutbdlvs1/workflows/Advanced/Print",
 	"zscm/ewm/packoutbdlvs1/workflows/Advanced/ShippingHUChange",
-	"zscm/ewm/packoutbdlvs1/workflows/Advanced/FeatureSetChange"
+	"zscm/ewm/packoutbdlvs1/workflows/Advanced/FeatureSetChange",
+	"zscm/ewm/packoutbdlvs1/workflows/Advanced/UpdateMiscCarrier"
 ], function(BaseObject, ChangeMaterial, CloseShipHU, CreateShipHU, DeleteShipHU, PackAll, PackItem, PackPartial, PackWithDifference,
 	ProductChange, SelectShipHU, SourceChange, UnpackAll, UnpackItem, QuantityChange, Leave, RestoreShipHU, Clear, Print,
-	ShippingHUChange, FeatureSetChange) {
+	ShippingHUChange, FeatureSetChange, UpdateMiscCarrier) {
 	"use strict";
 	var Factory = BaseObject.extend("zscm.ewm.packoutbdlvs1.workflows.AdvancedFactory", {
 		aImplemention: [
@@ -46,7 +47,8 @@ sap.ui.define([
 			Clear,
 			Print,
 			ShippingHUChange,
-			FeatureSetChange
+			FeatureSetChange,
+			UpdateMiscCarrier
 		]
 	});
 	return Factory;

@@ -34,7 +34,8 @@ sap.ui.define([
 			"getClearWorkFlow",
 			"getPrintWorkFlow",
 			"getShipHUChangeWorkFlow",
-			"getFeatureSetChangeWorkFlow"
+			"getFeatureSetChangeWorkFlow",
+			"getUpdateMiscCarrierWorkFlow"
 		],
 		abstract: true,
 		final: false,

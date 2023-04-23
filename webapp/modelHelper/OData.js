@@ -20,6 +20,10 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			var sTemplate = "/PackingStationSet(EWMWarehouse=''{0}'',EWMWorkCenter=''{1}'',EWMStorageBin='''')";
 			return Util.formatText(sTemplate, [Global.getWarehouseNumber(), sWorkCenter]);
 		},
+		getOdoPath: function(sDocid) {
+			var sTemplate = "/ODOSet(EWMStorageBin=''{0}'',EWMWarehouse=''{1}'',HuId=''{2}'',Type=''{3}'',EWMWorkCenter=''{4}'',DocumentReltdStockDocUUID=guid''{5}'')";
+			return Util.formatText(sTemplate, [Global.getBin(), Global.getWarehouseNumber(), Global.getSourceId(), Global.getSourceType(), Global.getPackStation(), sDocid]);
+		},
 		getHUPath: function (sHUId, sHUType) {
 			if (!sHUId) {
 				sHUId = Global.getSourceId();

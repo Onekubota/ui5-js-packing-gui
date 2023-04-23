@@ -233,10 +233,15 @@ sap.ui.define([
 						}
 						var oODO = vODOMap[oItem.DocumentReltdStockDocUUID];
 						if (!Util.isEmpty(oODO)) {
-							oItem.CustomerName = oODO.CustomerName;
-							oItem.PackInstr = oODO.PackInstr;
-							oItem.ShipToAddress = oODO.ShipToAddress;
-							oItem.CarrierService = oODO.CarrierService;
+							[
+								"CustomerName",
+								"PackInstr",
+								"ShipToAddress",
+								"ShipToAddress",
+								"CarrierService",
+								"IsMiscCarrier",
+								"MiscCarrier"
+							].forEach((key) => oItem[key] = oODO[key]);
 						}
 					});
 					return aItems;
@@ -252,6 +257,13 @@ sap.ui.define([
 				"WeightUoM": mHUData.WeightUoM,
 				"TotalWeight": sTotalWeight,
 				"EWMRefDeliveryDocumentNumber": mHUData.EWMRefDeliveryDocumentNumber
+			};
+			return this.getPromise(sPath, PUT, mData);
+		},
+		updateMiscCarrier: function(sCarrier, sDocid) {
+			var sPath = ODataHelper.getOdoPath(sDocid);
+			var mData = {
+				MiscCarrier: sCarrier
 			};
 			return this.getPromise(sPath, PUT, mData);
 		},

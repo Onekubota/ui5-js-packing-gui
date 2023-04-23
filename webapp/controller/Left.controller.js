@@ -25,6 +25,7 @@ sap.ui.define([
 	BasicSourceTableSetting, InternalSourceTableSetting) {
 	"use strict";
 	var serialNumberDialogId = "serialNumberDialog";
+	var miscCarrierDialogId = "miscCarrierDialog";
 	var serialNumberInputId = "id-input-serialNumber";
 	var stockLevleSnDialogId = "stockLevelSnDialog";
 	var stockLevelSnInputId = "stockLevel-sn-input";
@@ -894,6 +895,23 @@ sap.ui.define([
 			SerialNumber.clearSerialNumbersList();
 			return oDialog;
 		},
+		getMiscCarrierUpdateDialog: function() {
+			var oView = this.getView();
+			var oDialog = oView.byId(miscCarrierDialogId);
+
+			if (!oDialog) {
+				oDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.MiscellaneousCarrierUpdate", this);
+				oView.addDependent(oDialog);
+				oDialog.attachAfterClose(function() {
+					oView.byId("id-input-mcarr").setValue("");
+					this.focus(Const.ID.PRODUCT_INPUT);
+				}, this);
+			}
+			return oDialog;
+		},
+		setFocusToMiscCarr: function() {
+			this.getView().byId("id-input-mcarr").focus();
+		},
 		getStockLevelSnDialog: function (sProductId) {
 			var oView = this.getView();
 			var oDialog = oView.byId(stockLevleSnDialogId);
@@ -911,6 +929,18 @@ sap.ui.define([
 			this.updateInputWithDefault(stockLevelSnInputId, "");
 			return oDialog;
 		},
+
+		onPressMiscCarrierLink: function() {
+			this.getMiscCarrierUpdateDialog().open();
+		},
+		onCancelMiscCarrier: function() {
+			this.getMiscCarrierUpdateDialog().close();
+		},
+		onUpdateMiscCarrier: function() {
+			var newMiscCarrier = this.getView().byId("id-input-mcarr").getValue()
+			this.getWorkFlowFactory().getUpdateMiscCarrierWorkFlow().run(newMiscCarrier);
+		},
+
 		/**
 		 * handle the event user input serial number in the stock level sn dialog 
 		 * stock level sn dialog poped out after user input a product which is stock level sn enabled
