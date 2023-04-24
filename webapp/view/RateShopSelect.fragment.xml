@@ -1,0 +1,30 @@
+<core:FragmentDefinition xmlns:smarttable="sap.ui.comp.smarttable"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog id="rateShopDialog" showHeader="false" contentWidth="80%" contentHeight="80%" title="{i18n>rateShopDialog}">
+		<!-- <smarttable:SmartTable id="id-tab-rates" entitySet="RateShopSet" header="{i18n>ratesHeader}"
+		 enableAutoBinding="false" useExportToExcel="false" app:useSmartField="false"> -->
+			<Table id="id-tab-rates-tab" models="rateModel" items="{rateModel>/}">
+				<columns>
+					<Column id="header.columnCarrier" demandPopin="true" minScreenWidth="Desktop" >
+						<!-- <customData>
+							<core:CustomData key="p13nData"
+												value='\{"columnKey":"Carrier","leadingProperty":"Carrier",
+													"filterProperty":"Carrier", "columnIndex":"0"}'/>
+						</customData> -->
+						<Text id="column.text.Carrier" text="{/#RateShop/Carrier/@sap:label}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem id="rate-col" press="onSelectNewRate">
+						<Text id="col-val-carrier" text="{rateModel>Carrier}"/>
+					</ColumnListItem>
+				</items>			
+			</Table>
+		<!-- </smarttable:SmartTable> -->
+		<buttons>
+			<Button id="btn-close-rateshopdlg" text="{i18n>cancel}" press="onCloseRateShopDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

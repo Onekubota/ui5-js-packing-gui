@@ -113,9 +113,9 @@
 									</f:label>
 									<f:fields>
 										<HBox id="_IDGenHBox1">
-										<Text text="{= ${itemModel>MiscCarrier} }" visible="{= ${itemModel>MiscCarrier} !== ''}" id="id-misccarrier-txt"/>
+										<!-- <Text text="{= ${itemModel>MiscCarrier} }" visible="{= ${itemModel>MiscCarrier} !== ''}" id="id-misccarrier-txt"/> -->
 										<!-- <Input id="id-misccarrier-val" visible="{= ${itemModel>MiscCarrier} === ''}"/> -->
-										<Link id="_IDGenButton1" text="Update Misc Carrier" press="onPressMiscCarrierLink" visible="{= ${itemModel>MiscCarrier} === ''}"/>
+										<Link id="_IDGenButton1" text="{= ${itemModel>MiscCarrier} === '' ? ${i18n>provideMiscCarrierShort} : ${itemModel>MiscCarrier} }" press="onPressMiscCarrierLink"/>
 										</HBox>
 									</f:fields>
 								</f:FormElement>

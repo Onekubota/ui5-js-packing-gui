@@ -8,7 +8,7 @@
 					<layout:GridData span="L8 M8 S8" id="pod---sndialog--mcarr--label-layout"/>
 				</layoutData>
 			</Label>	
-			<Input id="id-input-mcarr" submit="onUpdateMiscCarrier" enabled="true" class="sapUiTinyMarginEnd">
+			<Input id="id-input-mcarr" submit="onUpdateMiscCarrier" enabled="true" class="sapUiTinyMarginEnd" maxLength="30">
 				<layoutData>
 					<layout:GridData span="L10 M10 S10" id="pod---sndialog--mcarr--input"/>
 				</layoutData>
@@ -16,7 +16,7 @@
 		</layout:Grid>
 		<buttons>
 			<Button text="{i18n>updMiscCarrier}" type="Emphasized" press="onUpdateMiscCarrier" id="pod---mcarrDialog--upd"/>
-			<Button text="{i18n>cancel}" press="onCancelMiscCarrier" id="pod---mcarrdialog--cancel"/>
+			<Button text="{i18n>cancel}" press="closeMiscCarrierDialog" id="pod---mcarrdialog--cancel"/>
 		</buttons>
 	</Dialog>
 </core:FragmentDefinition>

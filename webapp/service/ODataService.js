@@ -239,6 +239,7 @@ sap.ui.define([
 								"ShipToAddress",
 								"ShipToAddress",
 								"CarrierService",
+								"CarrierServiceId",
 								"IsMiscCarrier",
 								"MiscCarrier"
 							].forEach((key) => oItem[key] = oODO[key]);
@@ -266,6 +267,10 @@ sap.ui.define([
 				MiscCarrier: sCarrier
 			};
 			return this.getPromise(sPath, PUT, mData);
+		},
+		getOdoDetails: function(sDocid) {
+			var sPath = ODataHelper.getOdoPath(sDocid);
+			return this.getPromise(sPath);
 		},
 		deleteShippingHU: function () {
 			var oURLParameters = ODataHelper.getDeleteHUParameters();
@@ -353,7 +358,12 @@ sap.ui.define([
 			return this.getPromise("/SearchHelpBinSet", READ, {}, {
 				filters: [oWarehouseNumberFilter]
 			});
+		},
+		getRateShops: function(sCarrierId) {
+			var oCarrierFilter = new Filter("Carrier", FilterOperator.EQ, sCarrierId);
+			return this.getPromise("/RateShopSet", READ, {}, {
+				filters: [oCarrierFilter]
+			});
 		}
-
 	};
 });

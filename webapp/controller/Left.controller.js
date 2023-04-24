@@ -26,6 +26,7 @@ sap.ui.define([
 	"use strict";
 	var serialNumberDialogId = "serialNumberDialog";
 	var miscCarrierDialogId = "miscCarrierDialog";
+	var rateShopDialogId = "rateShopDialog";
 	var serialNumberInputId = "id-input-serialNumber";
 	var stockLevleSnDialogId = "stockLevelSnDialog";
 	var stockLevelSnInputId = "stockLevel-sn-input";
@@ -50,6 +51,8 @@ sap.ui.define([
 			this.sTableId = "SourceProductTable";
 			this.setModel(this.oColumnSettingsHelper.getModel(), Const.COLUM_SETTING_MODEL_NAME);
 			this.setModel(PackingModeModel, "packMode");
+			this.oRateShopModel = new JSONModel([]);
+			this.setModel(this.oRateShopModel, "rateModel");
 		},
 		init: function () {
 			this.setButtonToolTip("open-partial-pack-button");
@@ -124,6 +127,9 @@ sap.ui.define([
 			}.bind(this));
 			this.subscribe(Const.EVENT_BUS.CHANNELS.ROUTE_MATCHED, Const.EVENT_BUS.EVENTS.SUCCESS, function (sChannel, sEvent) {
 				this.getWorkFlowFactory().getClearWorkFlow().run();
+			}.bind(this));
+			this.subscribe(Const.EVENT_BUS.CHANNELS.RATE_SHOP, Const.EVENT_BUS.EVENTS.GET, function (sChannel, sEvent) {
+				this.getWorkFlowFactory().getRateShopsWorkFlow().run();
 			}.bind(this));
 		},
 		onSourceInputChange: function (oEvent) {
@@ -909,6 +915,15 @@ sap.ui.define([
 			}
 			return oDialog;
 		},
+		getRateShopDialog: function() {
+			var oView = this.getView();
+			var oDialog = oView.byId(rateShopDialogId);
+			if (!oDialog) {
+				oDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.RateShopSelect", this);
+				oView.addDependent(oDialog);
+			}
+			return oDialog;
+		},
 		setFocusToMiscCarr: function() {
 			this.getView().byId("id-input-mcarr").focus();
 		},
@@ -933,14 +948,16 @@ sap.ui.define([
 		onPressMiscCarrierLink: function() {
 			this.getMiscCarrierUpdateDialog().open();
 		},
-		onCancelMiscCarrier: function() {
+		closeMiscCarrierDialog: function() {
 			this.getMiscCarrierUpdateDialog().close();
 		},
 		onUpdateMiscCarrier: function() {
 			var newMiscCarrier = this.getView().byId("id-input-mcarr").getValue()
 			this.getWorkFlowFactory().getUpdateMiscCarrierWorkFlow().run(newMiscCarrier);
 		},
-
+		onCloseRateShopDialog: function() {
+			this.getRateShopDialog().close();
+		},
 		/**
 		 * handle the event user input serial number in the stock level sn dialog 
 		 * stock level sn dialog poped out after user input a product which is stock level sn enabled

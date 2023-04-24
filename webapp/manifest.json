@@ -30,8 +30,17 @@
                 "type": "OData",
                 "settings": {
                     "odataVersion": "2.0",
-                    "annotations": [],
+                    "annotations": [
+                        "annotation0"
+                    ],
                     "localUri": "localService/ZSCWM_PACK_OUTBDLV_SRV/metadata.xml"
+                }
+            },
+            "annotation0": {
+                "type": "ODataAnnotation",
+                "uri": "localService/ZSCWM_PACK_OUTBDLV_SRV/annotations/annotation0.xml",
+                "settings": {
+                    "localUri": "localService/ZSCWM_PACK_OUTBDLV_SRV/annotations/annotation0.xml"
                 }
             }
         },

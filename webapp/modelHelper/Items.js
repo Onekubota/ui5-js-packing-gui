@@ -117,6 +117,10 @@ sap.ui.define([
 			this._oModel.setProperty("/" + iIndex + "/WeightUoM", sWeightUom);
 		},
 
+		updateMiscCarrierByIndex: function (iIndex, sMiscCarrier) {
+			this._oModel.setProperty("/" + iIndex + "/MiscCarrier", sMiscCarrier);
+		},
+
 		updateItemVolumeByIndex: function (iIndex, sVolume, sVolumeUom) {
 			this._oModel.setProperty("/" + iIndex + "/Volume", Util.formatNumber(parseFloat(sVolume), 3, 3));
 			this._oModel.setProperty("/" + iIndex + "/VolumeUoM", sVolumeUom);
@@ -671,6 +675,16 @@ sap.ui.define([
 			var aIndex = [];
 			aItems.forEach(function (oItem, iIndex) {
 				if (oItem.ProductName === sProduct) {
+					aIndex.push(iIndex);
+				}
+			});
+			return aIndex;
+		},
+		getItemsIndexBDocid: function (sDocid) {
+			var aItems = this._oModel.getData();
+			var aIndex = [];
+			aItems.forEach(function (oItem, iIndex) {
+				if (oItem.DocumentReltdStockDocUUID === sDocid) {
 					aIndex.push(iIndex);
 				}
 			});

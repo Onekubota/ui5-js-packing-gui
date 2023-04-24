@@ -36,6 +36,12 @@ sap.ui.define([
 			setTimeout(function(){
 				this.publish(Const.EVENT_BUS.CHANNELS.EXCEPTION_LIST, Const.EVENT_BUS.EVENTS.SUCCESS, Global.getExceptionList());
 			}.bind(this), 0);
+		},
+
+		getRateShops: function() {
+			setTimeout(function(){
+				this.publish(Const.EVENT_BUS.CHANNELS.RATE_SHOP, Const.EVENT_BUS.EVENTS.GET);
+			}.bind(this), 0);
 		}
 	});
 });

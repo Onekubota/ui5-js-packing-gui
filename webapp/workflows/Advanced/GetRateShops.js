@@ -9,25 +9,22 @@ sap.ui.define([
 	"use strict";
 	return function (oSourceController, oShipController) {
 		var oWorkFlow = new WorkFlow()
-			.then(function (newMiscCarrier) {
+			.then(function () {
 				this.setBusy(true);
+				this.oRateShopModel.setData([]);
 				var itemHelper = this.oItemHelper.getModel().getProperty("/0");
-				var docid = itemHelper.DocumentReltdStockDocUUID;
-				return Promise.all([
-					Service.updateMiscCarrier(newMiscCarrier, docid),
-					Service.getOdoDetails(docid)
-				]);
+				if (itemHelper) {
+					var carrierId = itemHelper.CarrierServiceId;
+					if (!!carrierId && carrierId !== "") {
+						return Service.getRateShops(carrierId);
+					}
+				}
 			}, oSourceController)
 			.then(function (result) {
-				if (result[1]) {
-					var aItems = this.oItemHelper.getItemsIndexBDocid(result[1].DocumentReltdStockDocUUID);
-					aItems.forEach(function (vIndex) {
-						this.oItemHelper.updateMiscCarrierByIndex(vIndex, result[1].MiscCarrier);
-					}.bind(this));
-					this.closeMiscCarrierDialog();
-					this.setBusy(false);
-				}
-			}, oSourceController);
+				this.oRateShopModel.setData(result);
+				this.getRateShopDialog().open();
+				this.setBusy(false);
+			}, oSourceController)
 
 		oWorkFlow
 			.errors()
