@@ -131,6 +131,9 @@ sap.ui.define([
 			this.subscribe(Const.EVENT_BUS.CHANNELS.RATE_SHOP, Const.EVENT_BUS.EVENTS.GET, function (sChannel, sEvent) {
 				this.getWorkFlowFactory().getRateShopsWorkFlow().run();
 			}.bind(this));
+			this.subscribe(Const.EVENT_BUS.CHANNELS.RATE_SHOP, Const.EVENT_BUS.EVENTS.SELECTED, function (sChannel, sEvent) {
+				this.getRateShopDialog().close();
+			}.bind(this));
 		},
 		onSourceInputChange: function (oEvent) {
 			var sInput = Util.trim(oEvent.getParameter("newValue")).toUpperCase();
@@ -1302,6 +1305,9 @@ sap.ui.define([
 				return "";
 			}
 			return sHandlingInstruction;
+		},
+		onSelectNewRate: function() {
+			this.getRateShopDialog().close();
 		},
 		/*
 		 * @param {string} sMessage

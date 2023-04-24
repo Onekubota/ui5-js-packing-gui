@@ -99,15 +99,19 @@
 										<Label text="{i18n>grossWeight}" id="pod--tab--grid--form--weight--grossweight" wrapping="true"></Label>
 									</f:label>
 									<f:fields>
-										<Input id="actual-weight-input"
-											editable="{parts:[{path:'global>/currentShipHandlingUnitClosed'}, {path:'itemModel>/'},{path:'global>/pendingTaskNumber'}], formatter:'.formatWeightEnable'}"
-											change="onActualWeightChangeAdvanced"></Input>
-										<Text id="id-actual-weight" text="{material>/currentMaterial/MaxWeightUoM}">
-											<layoutData>
-												<l:GridData span="L2 M2 S2" id="pod--tab--grid--form--weight--actualweight"/>
-											</layoutData>
-										</Text>
-										<Button id="id-btn-read-scale" text="Read Scale"></Button>
+										<HBox>
+											<Button id="id-btn-read-scale" class="sapUiTinyMarginEnd" icon="sap-icon://compare-2" width="18px"
+												enabled="{parts:[{path:'global>/currentShipHandlingUnitClosed'}, {path:'itemModel>/'},{path:'global>/pendingTaskNumber'}], formatter:'.formatWeightEnable'}"
+												press="onGetScaleWeight" visible="{global>/scaleEnabled}"/>
+											<Input id="actual-weight-input"
+												editable="{parts:[{path:'global>/currentShipHandlingUnitClosed'}, {path:'itemModel>/'},{path:'global>/pendingTaskNumber'}], formatter:'.formatWeightEnable'}"
+												change="onActualWeightChangeAdvanced" width="100px"></Input>
+											<Text id="id-actual-weight" text="{material>/currentMaterial/MaxWeightUoM}">
+												<layoutData>
+													<l:GridData span="L2 M2 S2" id="pod--tab--grid--form--weight--actualweight"/>
+												</layoutData>
+											</Text>
+										</HBox>
 									</f:fields>
 								</f:FormElement>
 							</f:formElements>

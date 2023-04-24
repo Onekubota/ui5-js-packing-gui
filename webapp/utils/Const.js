@@ -61,7 +61,8 @@ sap.ui.define([], function () {
 				SUCCESS: "SUCCESS",
 				ERROR: "ERROR",
 				WAREHOUSE_CHANGED: "WAREHOUSE_CHAGNED",
-				GET: "GET"
+				GET: "GET",
+				SELECTED: "SELECTED"
 			}
 		},
 		ERRORS: {
