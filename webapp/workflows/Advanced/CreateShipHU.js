@@ -30,7 +30,9 @@ sap.ui.define([
 				return this.createNewTab(mSession.sHuId, Const.TAB.ADVANCED);
 			}, oShipController)
 			.then(function (preResult, mSession) {
-				mSession.oComponent.setBusy(false).close();
+				if (mSession.oComponent) {
+					mSession.oComponent.setBusy(false).close();					
+				}
 			}, oShipController)
 			.then(function (preResult, mSession) {
 				this.updateDataBingdingAfterCreation(mSession);

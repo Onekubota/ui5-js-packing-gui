@@ -21,8 +21,7 @@ sap.ui.define([
 	"zscm/ewm/packoutbdlvs1/modelHelper/PackingMode",
 	"zscm/ewm/packoutbdlvs1/model/PackingMode",
 	"zscm/ewm/packoutbdlvs1/model/BasicShipTableSetting",
-	"zscm/ewm/packoutbdlvs1/model/InternalShipTableSetting",
-	"sap/makit/Value"
+	"zscm/ewm/packoutbdlvs1/model/InternalShipTableSetting"
 ], function (Controller, Global, Service, Message, Util, MaterialModel, MaterialHelper, TableItemsHelper,
 	JSONModel, ODataHelper, Const, Cache, CustomError, ValueColor, ValueState, MessageBox, ItemWeight, AdvancedShipTableSetting,
 	ColumnSettingsHelper, PackingMode, PackingModeModel, BasicShipTableSetting, InternalShipTableSetting) {
@@ -370,6 +369,27 @@ sap.ui.define([
 			}
 			this.handleUnpackEnable();
 		},
+
+		onOpenAssignTrackNumberDialog: function(aHusWithoutTrks) {
+			return new Promise(function (resolve, reject) {
+				var oView = this.getView();
+				if (!this.oTrkNumberDialog) {
+					this.oTrkNumberDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.AssignTrackingNumberDialog", this);
+					oView.addDependent(this.oTrkNumberDialog);
+				}
+				var data = aHusWithoutTrks.map(function(oHu) {
+					return {
+						Huid: oHu.Huid,
+						TrackNum: ""
+					};
+				});
+				this.oTrkNumberDialog.setModel(new JSONModel(data), "trackNumberModel");
+				if (!this.oTrkNumberDialog.isOpen()) {
+					this.oTrkNumberDialog.open();
+				}
+			}.bind(this));
+		},
+
 		needAutoCreateShippingHU: function (sConsGroup) {
 			var aShippingHUs = Global.getShipHandlingUnits();
 			if (PackingMode.isInternalMode()) {
@@ -558,6 +578,9 @@ sap.ui.define([
 					oBinInput.setValueState(ValueState.Error);
 					oBinInput.setValueStateText(this.getI18nText("enterStorageBin", []));
 					return;
+				} else {
+					oBinInput.setValue("");
+					oBinInput.setValueState(ValueState.None);
 				}
 			}
 			var sMaterialId = MaterialHelper.getSelectedMaterialId();
@@ -565,7 +588,7 @@ sap.ui.define([
 				this.setMessageStripVisible(noMaterialStripId, true);
 				this.playAudio(Const.ERROR);
 				return;
-			} else if (MaterialHelper.IsSelectedMaterialExternal()) {
+			} else if (MaterialHelper.IsSelectedMaterialExternal("")) {
 				if (sHuId === "") {
 					this.updateInputWithError(Const.ID.CREATE_SHIP_INPUT);
 					this.focus(Const.ID.CREATE_SHIP_INPUT);
@@ -581,11 +604,11 @@ sap.ui.define([
 			oDialog.setBusy(true);
 			this.getWorkFlowFactory().getShipHUCreationWorkFlow().run(oCreateInfo);
 		},
-		onPrint: function () {
+		onPrint: function () {		//onShip
 			this.getWorkFlowFactory().getPrintWorkFlow().run();
 		},
 		onShipAll: function() {
-			//#TODO
+			this.getWorkFlowFactory().getPrintWorkFlow().run(true);
 		},
 		onRemoveClosedShipHU: function () {
 			this.getWorkFlowFactory().getShipHUCloseWorkFlow().run(true);

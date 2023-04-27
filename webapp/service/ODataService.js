@@ -327,10 +327,26 @@ sap.ui.define([
 			});
 		},
 		print: function () {
-			return this.getPromise("/Print", CREATE, {}, {
-				urlParameters: ODataHelper.getPrintParameters()
-			});
+			// return this.getPromise("/Print", CREATE, {}, {
+			// 	urlParameters: ODataHelper.getPrintParameters()
+			// });
+			var currentShipHu = Global.getCurrentShipHandlingUnit();
+			return this.printAll(currentShipHu);
 		},
+
+		printAll: function(sHuid) {
+			var aHus = ODataHelper.getShipHandlingUnitsForPrint().filter(oHu => oHu.TrackNum === "");
+			if (sHuid !== undefined && sHuid !== "") {
+				aHus = aHus.filter(oHu => oHu.Huid === sHuid);
+			}
+			var aPromises = aHus.map(function(oHu) {
+				return this.getPromise("/CheckTrackNumberRequirement", READ, {}, {
+					urlParameters: ODataHelper.getPrintParametersByHuid(oHu.Huid)
+				});
+			}, this);
+			return Promise.all(aPromises);
+		},
+
 		getItemWeight: function (sSourceId, sSourceType) {
 			if (Util.isEmpty(sSourceId)) {
 				sSourceId = Global.getSourceId();

@@ -57,11 +57,11 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			return Util.formatText(sTemplate, sStockItemUUID);
 		},
 		getShipHUMaterialId: function (sHuid) {
-			var sPath = this.getHUPath(sHuid, Const.SHIP_TYPE_HU) + "/PackagingMaterial";
+			var sPath = this.getHUPath(sHuid, Const.SHIP_TYPE_HU.toString()) + "/PackagingMaterial";
 			return _oModel.getProperty(sPath);
 		},
 		getShipHUTrackingNumber: function (sHuid) {
-			var sPath = this.getHUPath(sHuid, Const.SHIP_TYPE_HU) + "/TrackNumber";
+			var sPath = this.getHUPath(sHuid, Const.SHIP_TYPE_HU.toString()) + "/TrackNumber";
 			return _oModel.getProperty(sPath);
 		},
 		getPackageMaterial: function () {
@@ -143,6 +143,25 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 				"EWMStorageBin": "'" + Global.getBin() + "'",
 				"HUId": "'" + Global.getCurrentShipHandlingUnit() + "'"
 			};
+		},
+		getPrintParametersByHuid: function (sHuid) {
+			return {
+				"EWMWarehouse": "'" + Global.getWarehouseNumber() + "'",
+				"EWMWorkCenter": "'" + Global.getPackStation() + "'",
+				"Huid": "'" + sHuid + "'"
+			};
+		},
+
+		getShipHandlingUnitsForPrint: function() {
+			var aHunits = [];
+			Global.getShipHandlingUnits().forEach(function(sHu) {
+				var sTrackNum = this.getShipHUTrackingNumber(sHu);
+				aHunits.push({
+					Huid: sHu,
+					TrackNum: sTrackNum || ""
+				});
+			}, this);	
+			return aHunits;		
 		},
 
 		getUnpackAllParameters: function (aProducts) {
