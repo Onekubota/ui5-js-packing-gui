@@ -390,6 +390,19 @@ sap.ui.define([
 			}.bind(this));
 		},
 
+		onScanTrackNumber: function(oEvent) {
+			var oTable = this.getView().byId("upd-trk-num-tab");
+			var aItems = oTable.getItems();
+			for (let index = 0; index < aItems.length; index++) {
+				const oItem = aItems[index];
+				var cells = oItem.getCells();
+				if (cells[1].getValue().trim() === "") {
+					this.focus(cells[1]);
+					break;
+				}
+			}
+		},
+
 		needAutoCreateShippingHU: function (sConsGroup) {
 			var aShippingHUs = Global.getShipHandlingUnits();
 			if (PackingMode.isInternalMode()) {
