@@ -105,14 +105,18 @@ sap.ui.define([
 			});
 		},
 
-		createShippingHU: function (sHuId, sMaterialId) {
+		createShippingHU: function (sHuId, sMaterialId, sBin) {
+			var sOverrideBin = Global.getBin();;
+			if (sOverrideBin === "" && sBin !== "") {
+				sOverrideBin = sBin;
+			}
 			var mData = {
 				"HuId": sHuId,
 				"EWMWarehouse": Global.getWarehouseNumber(),
 				"EWMWorkCenter": Global.getPackStation(),
 				"PackagingMaterial": sMaterialId,
 				"EWMRefDeliveryDocumentNumber": "",
-				"EWMStorageBin": Global.getBin(),
+				"EWMStorageBin": sOverrideBin,
 				"Type": "1"
 			};
 			return this.getPromise("/HUSet", CREATE, mData);

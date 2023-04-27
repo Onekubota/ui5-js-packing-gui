@@ -8,6 +8,7 @@ sap.ui.define([
 		"sourceId": "",
 		"sourceType": "",
 		"currentShipHandlingUnit": "",
+		"currentShipHandlingUnitTrackNumber": "",
 		"currentShipHandlingUnitClosed": false, //the flag of if the current ship hu is closed or not
 		"shipHandlingUnits": [], //ship handling unit id
 		"exceptionEnable": false,

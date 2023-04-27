@@ -21,7 +21,7 @@ sap.ui.define([
 				this.prepareParemeterForCreation(mSession.oCreateInfo, mSession);
 			}, oSourceController)
 			.then(function (preResult, mSession) {
-				return Service.createShippingHU(mSession.sHuId, mSession.sMaterialId);
+				return Service.createShippingHU(mSession.sHuId, mSession.sMaterialId, mSession.sBin);
 			}, oShipController)
 			.then(function (preResult, mSession) {
 				this.updateParameterAfterCreation(preResult, mSession);

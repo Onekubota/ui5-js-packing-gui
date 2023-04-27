@@ -99,13 +99,13 @@
 										<Label text="{i18n>grossWeight}" id="pod--tab--grid--form--weight--grossweight" wrapping="true"></Label>
 									</f:label>
 									<f:fields>
-										<HBox>
+										<HBox id="hbox-weight-content" alignItems="Center">
 											<Button id="id-btn-read-scale" class="sapUiTinyMarginEnd" icon="sap-icon://compare-2" width="18px"
 												enabled="{parts:[{path:'global>/currentShipHandlingUnitClosed'}, {path:'itemModel>/'},{path:'global>/pendingTaskNumber'}], formatter:'.formatWeightEnable'}"
-												press="onGetScaleWeight" visible="{global>/scaleEnabled}"/>
+												press="onGetScaleWeight" visible="{global>/scaleEnabled}" tooltip="{i18n>weight}"/>
 											<Input id="actual-weight-input"
 												editable="{parts:[{path:'global>/currentShipHandlingUnitClosed'}, {path:'itemModel>/'},{path:'global>/pendingTaskNumber'}], formatter:'.formatWeightEnable'}"
-												change="onActualWeightChangeAdvanced" width="100px"></Input>
+												change="onActualWeightChangeAdvanced" width="100px" class="sapUiTinyMarginEnd"/>
 											<Text id="id-actual-weight" text="{material>/currentMaterial/MaxWeightUoM}">
 												<layoutData>
 													<l:GridData span="L2 M2 S2" id="pod--tab--grid--form--weight--actualweight"/>

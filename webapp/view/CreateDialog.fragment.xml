@@ -3,7 +3,7 @@
     Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
 
 -->
-<core:FragmentDefinition id="pod---create--fragement" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout"
+<core:FragmentDefinition xmlns:smartfield="sap.ui.comp.smartfield" id="pod---create--fragement" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout"
 	xmlns:form="sap.ui.layout.form">
 	<Dialog id="createShipHUDialog" title="{path:'packMode>/selectedMode',formatter:'.formatCreateDialogTitle'}" draggable="true"
 		contentWidth="{=${material>/favoriteMaterials}.length === 0? '400px':'500px'}" afterClose="onAfterCloseCreateDialog"
@@ -37,7 +37,7 @@
 						<layout:GridData id="pod---createdialog--dialog--otheroption--layoutdata" span="L10 M10 S10"/>
 					</layoutData>
 				</Label>
-				<ComboBox id="other-material-combo" items="{path: 'material>/otherMaterials'}" width="100%" change="onSelectOtherMaterial">
+				<ComboBox id="other-material-combo" items="{path: 'material>/otherMaterials'}" width="100%" change="onSelectOtherMaterial" selectionChange="onSelectOtherMaterial">
 					<layoutData>
 						<layout:GridData id="pod---createdialog--dialog--form--grid--label--combobox" span="L10 M10 S10"/>
 					</layoutData>
@@ -56,6 +56,20 @@
 						<layout:GridData id="pod---createdialog--createshiphu-input-layout" span="L10 M10 S10"/>
 					</layoutData>
 				</Input>
+				
+				<Label id="bin--label" text="{i18n>storageBin}" labelFor="bin-input">
+					<layoutData>
+						<layout:GridData span="L10 M10 S10" id="bin-input--griddata"/>
+					</layoutData>
+				</Label>
+				<smartfield:SmartField
+					id="bin-input"
+					entitySet=""
+					value="{
+						path: 'EWMStorageBin'
+					}"
+					change="onCreateShippingHU"
+				/>
 			</layout:Grid>
 		</form:SimpleForm>
 		<MessageStrip id="empty-material-msg-strip" text="{i18n>materialEmptyMsg}" visible="false" type="Error" showIcon="false"

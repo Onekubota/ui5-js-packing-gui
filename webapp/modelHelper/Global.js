@@ -111,7 +111,12 @@ sap.ui.define([
 		getExceptionEnable: function () {
 			return Model.getProperty("/exceptionEnable");
 		},
-
+		setCurrentShipHandlingUnitTrackNumber: function(sTrackNumber) {
+			Model.setProperty("/currentShipHandlingUnitTrackNumber", sTrackNumber);
+		},
+		getCurrentShipHandlingUnitTrackNumber: function() {
+			return Model.getProperty("/currentShipHandlingUnitTrackNumber");
+		},
 		setPackAllEnable: function (bEnable) {
 			Model.setProperty("/packAllEnable", bEnable);
 		},

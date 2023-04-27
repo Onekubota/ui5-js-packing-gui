@@ -1,10 +1,9 @@
-<core:FragmentDefinition xmlns:smarttable="sap.ui.comp.smarttable"
+<core:FragmentDefinition
 	xmlns="sap.m"
-	xmlns:core="sap.ui.core"
-	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	xmlns:core="sap.ui.core">
 	<Dialog id="rateShopDialog" showHeader="false" contentWidth="80%" contentHeight="80%" title="{i18n>rateShopDialog}">
-		<Table id="id-tab-rates-tab" models="rateModel" items="{rateModel>/}" mode="SingleSelectMaster" includeItemInSelection="true"
-			headerText="{i18n>ratesHeader}">
+		<Table id="id-tab-rates-tab" items="{rateModel>/}" mode="SingleSelectMaster" includeItemInSelection="true"
+				headerText="{i18n>ratesHeader}" itemPress="onSelectNewRate">
 			<columns>
 				<Column id="col-carr"><Text id="col-carr-val" text="{/#RateShop/Carrier/@sap:label}"/></Column>
 				<Column id="col-name"><Text id="col-name-val" text="{/#RateShop/Name/@sap:label}"/></Column>
@@ -19,7 +18,7 @@
 				<Column id="col-trnx"><Text id="col-trnx-val" text="{/#RateShop/Transactionid/@sap:label}"/></Column>
 			</columns>
 			<items>
-				<ColumnListItem id="rate-cols" press="onSelectNewRate" type="Active">
+				<ColumnListItem id="rate-cols" type="Active">
 					<Text id="col-val-carr" 		text="{rateModel>Carrier}"/>
 					<Text id="col-val-name" 		text="{rateModel>Name}"/>
 					<Text id="col-val-service" 		text="{rateModel>Service}"/>

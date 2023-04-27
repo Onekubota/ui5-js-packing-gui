@@ -365,6 +365,7 @@ sap.ui.define([
 							});
 						} else {
 							this.updateInputWithDefault(oStorageInput, "");
+							this.byId(startPackingId).setEnabled(true);
 						}
 					}
 					this.focus(storageBinInputId);
@@ -449,6 +450,7 @@ sap.ui.define([
 		onStartPacking: function (oEvent) {
 			var sWorkCenter = Global.getPackStation();
 			var sStorageBin = this.byId(storageBinInputId).getValue();
+			Global.setBin(sStorageBin);
 			var sMode = PackingModeHelper.getSelectedMode();
 
 			this.setBusy(true);

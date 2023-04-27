@@ -60,6 +60,10 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			var sPath = this.getHUPath(sHuid, Const.SHIP_TYPE_HU) + "/PackagingMaterial";
 			return _oModel.getProperty(sPath);
 		},
+		getShipHUTrackingNumber: function (sHuid) {
+			var sPath = this.getHUPath(sHuid, Const.SHIP_TYPE_HU) + "/TrackNumber";
+			return _oModel.getProperty(sPath);
+		},
 		getPackageMaterial: function () {
 			var oMaterial = Material.getCurrentMaterial();
 			return oMaterial.PackagingMaterial;

@@ -119,8 +119,6 @@
 										</HBox>
 									</f:fields>
 								</f:FormElement>
-
-
 								<f:FormElement id="ProductHandlingInstr">
 									<f:label>
 										<Label text="{i18n>handlingInstruction}" id="pod---source--hanldingunit--label" wrapping="true"></Label>

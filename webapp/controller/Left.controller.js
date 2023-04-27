@@ -384,6 +384,7 @@ sap.ui.define([
 			mSession.sMaterialId = oCreateInfo.sMaterialId;
 			mSession.oComponent = oCreateInfo.oDialog;
 			mSession.sHuId = oCreateInfo.sHuId;
+			mSession.sBin = oCreateInfo.sBin;
 			mSession.sourceItems = this.oItemHelper.getItemsNum();
 			mSession.isSingleConsGroupNoReduction = this.oItemHelper.isSingleConsGroupNoReduction();
 			mSession.isSNEnable = this.oItemHelper.isSerialNumberEnable();
@@ -924,6 +925,9 @@ sap.ui.define([
 			if (!oDialog) {
 				oDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.RateShopSelect", this);
 				oView.addDependent(oDialog);
+				oDialog.attachAfterClose(function() {
+					oView.byId("id-tab-rates-tab").removeSelections(true);
+				}, this);
 			}
 			return oDialog;
 		},

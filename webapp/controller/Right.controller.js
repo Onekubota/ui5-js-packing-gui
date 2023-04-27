@@ -21,7 +21,8 @@ sap.ui.define([
 	"zscm/ewm/packoutbdlvs1/modelHelper/PackingMode",
 	"zscm/ewm/packoutbdlvs1/model/PackingMode",
 	"zscm/ewm/packoutbdlvs1/model/BasicShipTableSetting",
-	"zscm/ewm/packoutbdlvs1/model/InternalShipTableSetting"
+	"zscm/ewm/packoutbdlvs1/model/InternalShipTableSetting",
+	"sap/makit/Value"
 ], function (Controller, Global, Service, Message, Util, MaterialModel, MaterialHelper, TableItemsHelper,
 	JSONModel, ODataHelper, Const, Cache, CustomError, ValueColor, ValueState, MessageBox, ItemWeight, AdvancedShipTableSetting,
 	ColumnSettingsHelper, PackingMode, PackingModeModel, BasicShipTableSetting, InternalShipTableSetting) {
@@ -92,6 +93,11 @@ sap.ui.define([
 			this.setModel(this.oItemHelper.getModel(), Const.ITEM_MODEL_NAME);
 			this.setModel(MaterialModel, "material");
 			this.setModel(this.oColumnSettingsHelper.getModel(), Const.COLUM_SETTING_MODEL_NAME);
+		},
+		bindStorageBin: function () {
+			this.byId("bin-input").bindElement({
+				path: "/PackingStationSet(EWMWarehouse='" + Global.getWarehouseNumber() + "',EWMWorkCenter='" + Global.getPackStation() + "',EWMStorageBin='')"
+			});
 		},
 		getPersonlServiceContainerItemName: function () {
 			if (PackingMode.isAdvancedMode()) {
@@ -338,9 +344,11 @@ sap.ui.define([
 				MaterialHelper.setMaterialPressedById(sDefaultMaterialId, true);
 				MaterialHelper.setSelectedMaterialId(sDefaultMaterialId);
 			}
+			this.bindStorageBin();
 		},
 		onAfterOpenCreateDialog: function () {
-			this.focus(Const.ID.CREATE_SHIP_INPUT);
+			// this.focus(Const.ID.CREATE_SHIP_INPUT);
+			this.focus("other-material-combo");
 		},
 		onAfterCloseCreateDialog: function () {
 			this.getView().getParent().getContent()[0].byId("product-input").focus();
@@ -525,6 +533,12 @@ sap.ui.define([
 					MaterialHelper.clearFormerPressedMaterial();
 					MaterialHelper.setSelectedMaterialId(sMaterialId);
 					this.setMessageStripVisible(noMaterialStripId, false);
+					var bin = Global.getBin();
+					if (!bin || bin.trim() === "") {
+						this.focus("bin-input");
+					} else {
+						this.onShipHUIDSubmit({});
+					}
 				} else {
 					if (!Util.isEmpty(sInput)) {
 						this.updateInputWithError("other-material-combo", this.getI18nText("incorrectMaterial"));
@@ -536,6 +550,16 @@ sap.ui.define([
 			var oDialog = oEvent.getSource().getParent();
 			var oInput = this.getView().byId(Const.ID.CREATE_SHIP_INPUT);
 			var sHuId = oInput.getValue();
+			var bin = Global.getBin();
+			if (bin.trim() === "") {
+				var oBinInput = this.getView().byId("bin-input");
+				bin = oBinInput.getValue();
+				if (bin.trim() === "") {
+					oBinInput.setValueState(ValueState.Error);
+					oBinInput.setValueStateText(this.getI18nText("enterStorageBin", []));
+					return;
+				}
+			}
 			var sMaterialId = MaterialHelper.getSelectedMaterialId();
 			if (Util.isEmpty(sMaterialId)) {
 				this.setMessageStripVisible(noMaterialStripId, true);
@@ -551,6 +575,7 @@ sap.ui.define([
 			}
 			var oCreateInfo = {};
 			oCreateInfo.sHuId = sHuId;
+			oCreateInfo.sBin = bin;
 			oCreateInfo.sMaterialId = sMaterialId;
 			oCreateInfo.oDialog = oDialog;
 			oDialog.setBusy(true);
@@ -1295,6 +1320,8 @@ sap.ui.define([
 		},
 		setCurrentShipHandlingUnit: function (sHuId) {
 			Global.setCurrentShipHandlingUnit(sHuId);
+			Global.setCurrentShipHandlingUnitTrackNumber(
+				ODataHelper.getShipHUTrackingNumber(sHuId));
 			if (Util.isEmpty(sHuId)) {
 				Global.setCurrentShipHandlingUnitClosed(false);
 			} else {

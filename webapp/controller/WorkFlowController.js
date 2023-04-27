@@ -17,12 +17,16 @@ sap.ui.define([
 			return this.oView.getParent().getParent().getParent().getController().oWorkFlowFactory;
 		},
 		oItemHelper: null,
-		formatTableTitle: function (sHU, aItems) {
+		formatTableTitle: function (sHU, aItems, sTrackNum) {
 			if (!sHU) {
 				return;
 			}
+			var sTnum = "";
+			if (sTrackNum && sTrackNum !== "") {
+				sTnum = this.getI18nText("trackNumberText", [sTrackNum]);
+			}
 
-			return this.getI18nText("itemsOfHandkingUnit", [sHU, aItems.length]);
+			return this.getI18nText("itemsOfHandkingUnit", [sHU, aItems.length, sTnum]);
 		},
 		onSerialNumberPopover: function (oEvent) {
 			this.openSerialNumberPopover(oEvent, Const.ITEM_MODEL_NAME, this.oItemHelper);

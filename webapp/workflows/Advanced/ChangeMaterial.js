@@ -121,6 +121,8 @@ sap.ui.define([
 					if (sCurrentShippingHU !== vPara.HuId) {
 						this.recreateTab(sCurrentShippingHU, vPara.HuId).then(function () {
 							Global.setCurrentShipHandlingUnit(vPara.HuId);
+							Global.setCurrentShipHandlingUnitTrackNumber(
+								ODataHelper.getShipHUTrackingNumber(vPara.HuId));
 							Global.changeShipHandlingUnit(sCurrentShippingHU, vPara.HuId);
 						});
 					}
