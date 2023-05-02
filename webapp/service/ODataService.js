@@ -347,6 +347,20 @@ sap.ui.define([
 			return Promise.all(aPromises);
 		},
 
+		updateTrackingNumbers: function(aHandlinUnits) {
+			var aHuData = aHandlinUnits.map(function(oHu) {
+				return ODataHelper.getUpdateTrackingParameters(oHu.Huid, oHu.TrackNum);
+			});
+			var aPromises =  aHuData.map(function(oHu) {
+				return this.getPromise("/UpdateTrackNumber", CREATE, {
+					changeSetId: "trackSet"
+				}, {
+					urlParameters: oHu
+				});
+			}, this);
+			return Promise.all(aPromises);
+		},
+
 		getItemWeight: function (sSourceId, sSourceType) {
 			if (Util.isEmpty(sSourceId)) {
 				sSourceId = Global.getSourceId();

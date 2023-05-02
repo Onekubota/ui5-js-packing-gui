@@ -138,6 +138,10 @@ sap.ui.define([], function () {
 		PACK_MODE: {
 			"OUTBOUND": 1,
 			"INTERNAL": 2
+		},
+		TRACK_REQUIREMENT: {
+			"POPUP": "",
+			"NUMBER_OBJECT": "A"
 		}
 	};
 });

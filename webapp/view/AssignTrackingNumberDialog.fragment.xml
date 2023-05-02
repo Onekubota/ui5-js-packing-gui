@@ -1,6 +1,6 @@
 <core:FragmentDefinition id="pod---updatetrknum--fragement" xmlns="sap.m" xmlns:core="sap.ui.core">
 	<Dialog id="updateTrackNumberDialog" title="{i18n>updateTrackNumberDialogTitle}" draggable="true"
-		contentWidth="60%" afterOpen="onScanTrackNumber">
+		contentWidth="60%" afterOpen="onScanTrackNumber" afterClose="onTrackNumberDialogClose">
 		<Table id="upd-trk-num-tab" width="auto" noDataText="No data" items="{path: 'trackNumberModel>/'}">
                 <columns>
                     <Column id="upd-trk-num-tab-col-shiphu" width="auto">
@@ -20,7 +20,17 @@
                     <ColumnListItem type="Active">
                         <cells>
                             <Text text="{trackNumberModel>Huid}"/>
-                            <Input value="{trackNumberModel>TrackNum}" submit="onScanTrackNumber" width="100%" />
+                            <Input value="{
+                                parts: [
+                                    {path: 'trackNumberModel>TrackNum' },
+                                    {path: 'trackNumberModel>Requirement' }
+                                ],
+                                formatter: '.formartTrackingNumber'
+                            }" 
+                            enabled="{= ${trackNumberModel>preAssigned} === false &amp;&amp; ${trackNumberModel>Requirement} === '' }" 
+                            submit="onScanTrackNumber" width="100%" 
+                            change="onUpdateTrackingNumberFromInput"
+                            />
                         </cells>
                     </ColumnListItem>
                 </items>

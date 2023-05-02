@@ -45,6 +45,14 @@ sap.ui.define([
 			ODataHelper.init(this.getModel());
 			jQuery.extend(this, AccessCodePart);
 
+			// this.getModel().setChangeGroups({
+			// 	"UpdateTrackNumber": {
+			// 		groupId: "groupUpdateTrack",
+			// 		changeSetId: "trackSet",
+			// 		single: false
+			// 	}
+			// });
+
 			var packmode = this.getComponentData().startupParameters.PackMode;
 			var sPackMode;
 			if (Util.isEmpty(packmode)) {

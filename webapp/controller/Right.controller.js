@@ -370,37 +370,87 @@ sap.ui.define([
 			this.handleUnpackEnable();
 		},
 
-		onOpenAssignTrackNumberDialog: function(aHusWithoutTrks) {
+		formartTrackingNumber: function (sNumber, sReq) {
+			var value = "";
+			if (!sNumber || sNumber !== "") {
+				value = sNumber;
+			}
+			if (value === "" && sReq === "A") {
+				value = this.getI18nText("internalTrackingNumber", []);
+			}
+			return value;
+		},
+
+		onUpdateTrackingNumberFromInput: function (oEvent) {
+			var value = oEvent.getSource().getValue();
+			var path = oEvent.getSource().getBindingContext("trackNumberModel").getPath();
+			oEvent.getSource().getModel("trackNumberModel").setProperty(`${path}/TrackNum`, value);
+		},
+
+		onOpenAssignTrackNumberDialog: function (aHus, bSingle) {
 			return new Promise(function (resolve, reject) {
 				var oView = this.getView();
 				if (!this.oTrkNumberDialog) {
 					this.oTrkNumberDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.AssignTrackingNumberDialog", this);
 					oView.addDependent(this.oTrkNumberDialog);
 				}
-				var data = aHusWithoutTrks.map(function(oHu) {
+				if (bSingle) {
+					var currentHu = Global.getCurrentShipHandlingUnit();
+					aHus = aHus.filter(oHu => oHu.Huid === currentHu);
+				}
+				var data = aHus.map(function (oHu) {
 					return {
 						Huid: oHu.Huid,
-						TrackNum: ""
+						TrackNum: oHu.TrackNum || "",
+						Requirement: oHu.TracknumRequirement,
+						preAssigned: (oHu.TrackNum && oHu.TrackNum !== "") ? true : false
 					};
 				});
 				this.oTrkNumberDialog.setModel(new JSONModel(data), "trackNumberModel");
 				if (!this.oTrkNumberDialog.isOpen()) {
+					this.oTrkNumberDialog.setBusy(false);
 					this.oTrkNumberDialog.open();
 				}
+				this.oTrkNumberDialog.resolve = resolve;
+				this.oTrkNumberDialog.reject = reject;
 			}.bind(this));
 		},
 
-		onScanTrackNumber: function(oEvent) {
+		onScanTrackNumber: function (oEvent) {
 			var oTable = this.getView().byId("upd-trk-num-tab");
 			var aItems = oTable.getItems();
+			var bFocus = false;
 			for (let index = 0; index < aItems.length; index++) {
 				const oItem = aItems[index];
 				var cells = oItem.getCells();
 				if (cells[1].getValue().trim() === "") {
 					this.focus(cells[1]);
+					bFocus = true;
 					break;
 				}
 			}
+			if (!bFocus) this.onUpdateTrackingNumbers(null);
+		},
+
+		onUpdateTrackingNumbers: function (oEvent) {
+			var oTrackModel = this.oTrkNumberDialog.getModel("trackNumberModel");
+			var data = oTrackModel.getData();
+			var aHusWoTrkNums = data.filter(oHu => oHu.TrackNum === "" && oHu.Requirement === Const.TRACK_REQUIREMENT.POPUP);
+			if (aHusWoTrkNums.length > 0) {
+				var sMessage = this.getI18nText("enterAllTrackNumbersMessage", []);
+				this.showErrorMessageBox(sMessage);
+				return;
+			}
+
+			var aHusToUpdate = data.filter(oHu =>
+				(oHu.Requirement === Const.TRACK_REQUIREMENT.POPUP && oHu.TrackNum.trim() !== "")
+				|| (oHu.TrackNum.trim() === "" && oHu.Requirement === Const.TRACK_REQUIREMENT.NUMBER_OBJECT));
+			this.getWorkFlowFactory().getUpdateTrackingNumberWorkFlow().run(aHusToUpdate);
+			// this.oTrkNumberDialog.resolve(data.filter(oHu => oHu.TrackNum !== ""));
+		},
+
+		onTrackNumberDialogClose: function () {
+			this.oTrkNumberDialog.reject(true);
 		},
 
 		needAutoCreateShippingHU: function (sConsGroup) {
@@ -438,25 +488,25 @@ sap.ui.define([
 			}
 			MessageBox.warning(
 				sWarning, {
-					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-					onClose: function (oAction) {
-						if (oAction === MessageBox.Action.OK) {
-							this.setBusy(true);
-							var bRefrshSource = false;
-							if (!this.oItemHelper.isEmpty()) {
-								//if pack from source hu, then deleted items will go back to bin
-								//if pack for odo, the deteted items will go back to bin, then app still need to refresh the source
-								bRefrshSource = (Global.isPackFromBin() || Global.isSourceTypeODO());
-							}
-
-							var oDeleteInfo = {
-								"bCallService": true,
-								"bRefreshSource": bRefrshSource
-							};
-							this.getWorkFlowFactory().getShipHUDeleteWorkFlow().run(oDeleteInfo);
+				actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+				onClose: function (oAction) {
+					if (oAction === MessageBox.Action.OK) {
+						this.setBusy(true);
+						var bRefrshSource = false;
+						if (!this.oItemHelper.isEmpty()) {
+							//if pack from source hu, then deleted items will go back to bin
+							//if pack for odo, the deteted items will go back to bin, then app still need to refresh the source
+							bRefrshSource = (Global.isPackFromBin() || Global.isSourceTypeODO());
 						}
-					}.bind(this)
-				}
+
+						var oDeleteInfo = {
+							"bCallService": true,
+							"bRefreshSource": bRefrshSource
+						};
+						this.getWorkFlowFactory().getShipHUDeleteWorkFlow().run(oDeleteInfo);
+					}
+				}.bind(this)
+			}
 			);
 			this.playAudio(Const.WARNING);
 		},
@@ -620,7 +670,7 @@ sap.ui.define([
 		onPrint: function () {		//onShip
 			this.getWorkFlowFactory().getPrintWorkFlow().run();
 		},
-		onShipAll: function() {
+		onShipAll: function () {
 			this.getWorkFlowFactory().getPrintWorkFlow().run(true);
 		},
 		onRemoveClosedShipHU: function () {
@@ -866,7 +916,7 @@ sap.ui.define([
 					var oProduct = oSource.getBindingContext(Const.ITEM_MODEL_NAME).getObject();
 					var oObjectInfo = {
 						oProduct: oProduct,
-						iQuantity: Util.formatNumber(Util.parseNumber(sNewValue) - Util.parseNumber(oProduct.PreviousAlterQuan),3),
+						iQuantity: Util.formatNumber(Util.parseNumber(sNewValue) - Util.parseNumber(oProduct.PreviousAlterQuan), 3),
 						mSource: oSource
 					};
 					if (oObjectInfo.iQuantity !== 0) {
@@ -1516,15 +1566,15 @@ sap.ui.define([
 				var sWarning = this.getI18nText("scanExistingHUonOtherSide");
 				MessageBox.warning(
 					sWarning, {
-						actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-						onClose: function (oAction) {
-							if (oAction === MessageBox.Action.YES) {
-								resolve();
-							} else {
-								reject(Const.ERRORS.INTERRUPT_WITH_NO_ACTION);
-							}
-						}.bind(this)
-					}
+					actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+					onClose: function (oAction) {
+						if (oAction === MessageBox.Action.YES) {
+							resolve();
+						} else {
+							reject(Const.ERRORS.INTERRUPT_WITH_NO_ACTION);
+						}
+					}.bind(this)
+				}
 				);
 			}.bind(this));
 		},

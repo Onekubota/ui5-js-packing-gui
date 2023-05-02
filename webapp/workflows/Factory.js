@@ -37,6 +37,7 @@ sap.ui.define([
 			"getFeatureSetChangeWorkFlow",
 			"getUpdateMiscCarrierWorkFlow",
 			"getRateShopsWorkFlow",
+			"getUpdateTrackingNumberWorkFlow",
 		],
 		abstract: true,
 		final: false,

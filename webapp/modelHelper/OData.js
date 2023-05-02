@@ -152,6 +152,15 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			};
 		},
 
+		getUpdateTrackingParameters: function(sHuid, sTrackNum) {
+			return {
+				"EWMWarehouse": "'" + Global.getWarehouseNumber() + "'",
+				"EWMWorkCenter": "'" + Global.getPackStation() + "'",
+				"Huid": "'" + sHuid + "'",
+				"TrackNumber": "'" + sTrackNum + "'"
+			};
+		},
+
 		getShipHandlingUnitsForPrint: function() {
 			var aHunits = [];
 			Global.getShipHandlingUnits().forEach(function(sHu) {
