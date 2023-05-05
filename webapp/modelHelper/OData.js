@@ -136,12 +136,13 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			}
 			return oParamater;
 		},
-		getPrintParameters: function () {
+		getPrintParameters: function (sHuid) {
+			var sHu = sHuid || Global.getCurrentShipHandlingUnit();
 			return {
 				"EWMWarehouse": "'" + Global.getWarehouseNumber() + "'",
 				"EWMWorkCenter": "'" + Global.getPackStation() + "'",
 				"EWMStorageBin": "'" + Global.getBin() + "'",
-				"HUId": "'" + Global.getCurrentShipHandlingUnit() + "'"
+				"HUId": "'" + sHu + "'"
 			};
 		},
 		getPrintParametersByHuid: function (sHuid) {

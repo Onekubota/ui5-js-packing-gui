@@ -21,10 +21,15 @@ sap.ui.define([
 	"zscm/ewm/packoutbdlvs1/modelHelper/PackingMode",
 	"zscm/ewm/packoutbdlvs1/model/PackingMode",
 	"zscm/ewm/packoutbdlvs1/model/BasicShipTableSetting",
-	"zscm/ewm/packoutbdlvs1/model/InternalShipTableSetting"
+	"zscm/ewm/packoutbdlvs1/model/InternalShipTableSetting",
+	"sap/m/MessageItem",
+	"sap/m/MessageView",
+	"sap/m/Dialog",
+	"sap/m/Button"
 ], function (Controller, Global, Service, Message, Util, MaterialModel, MaterialHelper, TableItemsHelper,
 	JSONModel, ODataHelper, Const, Cache, CustomError, ValueColor, ValueState, MessageBox, ItemWeight, AdvancedShipTableSetting,
-	ColumnSettingsHelper, PackingMode, PackingModeModel, BasicShipTableSetting, InternalShipTableSetting) {
+	ColumnSettingsHelper, PackingMode, PackingModeModel, BasicShipTableSetting, InternalShipTableSetting, MessageItem, MessageView, 
+	Dialog, Button) {
 	"use strict";
 	var quantityInput = "quantity_input";
 	var tabIdPrefix = "shipHU-";
@@ -377,6 +382,8 @@ sap.ui.define([
 			}
 			if (value === "" && sReq === "A") {
 				value = this.getI18nText("internalTrackingNumber", []);
+			} else if (value === "" && sReq === "B") {
+				value = this.getI18nText("autoTrackingNumber", []);
 			}
 			return value;
 		},
@@ -444,9 +451,52 @@ sap.ui.define([
 
 			var aHusToUpdate = data.filter(oHu =>
 				(oHu.Requirement === Const.TRACK_REQUIREMENT.POPUP && oHu.TrackNum.trim() !== "")
-				|| (oHu.TrackNum.trim() === "" && oHu.Requirement === Const.TRACK_REQUIREMENT.NUMBER_OBJECT));
+				|| (oHu.TrackNum.trim() === "" && oHu.Requirement !== Const.TRACK_REQUIREMENT.POPUP));
 			this.getWorkFlowFactory().getUpdateTrackingNumberWorkFlow().run(aHusToUpdate);
 			// this.oTrkNumberDialog.resolve(data.filter(oHu => oHu.TrackNum !== ""));
+		},
+
+		showUpdateTrackingBackendErrors: function(aCustomErrors) {
+			var oMessageTemplate = new MessageItem({
+				type: '{type}',
+				title: '{title}',
+				description: '{description}',
+			});
+
+			var aMockMessages = aCustomErrors.map(function(oCustomError) {
+				return {
+					type: 'Error',
+					title: oCustomError.getDescription(),
+					description: oCustomError.getKey()
+				};
+			});
+
+			var oMessageView = new MessageView({
+				items: {
+					path: "/",
+					template: oMessageTemplate
+				}
+			});
+			
+			var oModel = new JSONModel(aMockMessages);
+			oMessageView.setModel(oModel);
+
+			new Dialog({
+				title: this.getI18nText("trackingNumberUpdateMessagesDialog", []),
+				resizable: true,
+				content: oMessageView,
+				type: "Message",
+				beginButton: new Button({
+					text: this.getI18nText("btnTextClose", []),
+					press: function () {
+						this.getParent().close();
+					}
+				}),
+				showHeader: false,
+				contentHeight: "50%",
+				contentWidth: "50%",
+				verticalScrolling: false
+			}).open();
 		},
 
 		onTrackNumberDialogClose: function () {

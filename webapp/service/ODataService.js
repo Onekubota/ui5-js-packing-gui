@@ -326,10 +326,16 @@ sap.ui.define([
 				}
 			});
 		},
+		triggerHuPrint: function(aHus) {
+			var aPromises = aHus.map(function(oHu) {
+				return this.getPromise("/Print", CREATE, {}, {
+					urlParameters: ODataHelper.getPrintParameters(oHu)
+				});
+			}, this);
+			return Promise.all(aPromises);
+		},
+
 		print: function () {
-			// return this.getPromise("/Print", CREATE, {}, {
-			// 	urlParameters: ODataHelper.getPrintParameters()
-			// });
 			var currentShipHu = Global.getCurrentShipHandlingUnit();
 			return this.printAll(currentShipHu);
 		},
@@ -352,11 +358,28 @@ sap.ui.define([
 				return ODataHelper.getUpdateTrackingParameters(oHu.Huid, oHu.TrackNum);
 			});
 			var aPromises =  aHuData.map(function(oHu) {
-				return this.getPromise("/UpdateTrackNumber", CREATE, {
-					changeSetId: "trackSet"
-				}, {
-					urlParameters: oHu
-				});
+				return new Promise(function(resolve, reject) {
+					this.getPromise("/UpdateTrackNumber", CREATE, {}, {
+						urlParameters: oHu
+					})
+					.then(function(oData) {
+						resolve({
+							data: oData,
+							error: null
+						});
+					})
+					.catch(function(oError) {
+						resolve({
+							data: null,
+							error: oError
+						})
+					});
+				}.bind(this));
+				// return this.getPromise("/UpdateTrackNumber", CREATE, {
+				// 	// changeSetId: "trackSet"
+				// }, {
+				// 	urlParameters: oHu
+				// });
 			}, this);
 			return Promise.all(aPromises);
 		},

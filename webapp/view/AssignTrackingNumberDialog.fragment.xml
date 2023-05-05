@@ -17,7 +17,7 @@
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem type="Active">
+                    <ColumnListItem>
                         <cells>
                             <Text text="{trackNumberModel>Huid}"/>
                             <Input value="{

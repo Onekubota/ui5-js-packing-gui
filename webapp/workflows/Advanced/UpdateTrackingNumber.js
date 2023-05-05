@@ -15,10 +15,21 @@ sap.ui.define([
 			return Service.updateTrackingNumbers(aHusNew);
 		}, oShipController, "init package matrial buttons")
 		.then(function(result, mSession) {
+			var aErrors = result.filter(o => o.error !== null).map(o => o.error);
+			var aSuccess = result.filter(o => o.data !== null).map(o => o.data);
 			this.oTrkNumberDialog.setBusy(false);
-			this.oTrkNumberDialog.resolve();
+			aSuccess.forEach(function(data) {
+				var sShipHU = data.HuId;
+				this.getWorkFlowFactory().getShipHUSelectionWorkFlow().run(sShipHU);
+			}, this);
+			if (aErrors.length > 0) {				
+				this.showUpdateTrackingBackendErrors(aErrors);
+				return;
+			}
+			if (aSuccess.length > 0) {
+				this.oTrkNumberDialog.resolve(aSuccess);				
+			}
 			this.oTrkNumberDialog.close();
-			return Service.updateTrackingNumbers(aHandlingUnits);
 		}, oShipController, "init package matrial buttons");
 
 		oWorkFlow

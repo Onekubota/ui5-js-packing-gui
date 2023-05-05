@@ -24,23 +24,23 @@ sap.ui.define([
 					.map(entity => entity.CheckTrackNumberRequirement);
 				var aHusWithTrks = ODataHelper.getShipHandlingUnitsForPrint()
 					.filter(oHu => oHu.TrackNum.trim() !== "");
+					mSession.aHusWithTrks = aHusWithTrks;
 				if (aHusWithoutTrks.length > 0) {
 					var aHuList = [...aHusWithoutTrks, ...aHusWithTrks];
 					return this.onOpenAssignTrackNumberDialog(aHuList, mSession.single);
 				}
 			}, oShipController, "Check if ship all needs to get tracknumbers")
-			// .then(function(aHandlingUnits, mSession) {
-			// 	mSession.updatingTrackNums = true;
-			// 	this.oTrkNumberDialog.setBusy(true);
-			// 	return Service.updateTrackingNumbers(aHandlingUnits);
-			// }, oShipController, "Data from dialog")
-			// .then(function(result, mSession) {
-			// 	if (mSession.updatingTrackNums) {
-			// 		this.oTrkNumberDialog.setBusy(false);
-			// 		this.oTrkNumberDialog.close();
-			// 		debugger;
-			// 	}
-			// }, oShipController, "Data from dialog")
+			.then(function(aHandlingUnits, mSession) {
+				debugger;
+				var aHus = [];
+				if (aHandlingUnits) {
+					aHus = aHus.concat(aHandlingUnits.map(oHu => oHu.HuId));
+				}
+				if (mSession.aHusWithTrks) {
+					aHus = aHus.concat(mSession.aHusWithTrks.map(oHu => oHu.Huid));
+				}
+				return Service.triggerHuPrint(aHus);
+			}, oShipController, "Data from dialog")
 			.then(function () {
 				Message.addSuccess(this.getI18nText("printSuccess"));
 				this.playAudio(Const.INFO);
