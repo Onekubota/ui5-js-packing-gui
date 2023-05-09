@@ -198,6 +198,16 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			return oParameters;
 		},
 
+		getCloseShipHandlingUnitParametersById: function (sHuId) {
+			var oParameters = {
+				"EWMWarehouse": "'" + Global.getWarehouseNumber() + "'",
+				"EWMWorkCenter": "'" + Global.getPackStation() + "'",
+				"ShippingHUId": "'" + sHuId + "'",
+				"EWMStorageBin": "'" + Global.getBin() + "'"
+			};
+			return oParameters;
+		},
+
 		getChangeMaterialParameters: function (sHuId) {
 			var oParameters = {
 				"EWMWarehouse": "'" + Global.getWarehouseNumber() + "'",

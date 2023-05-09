@@ -31,7 +31,6 @@ sap.ui.define([
 				}
 			}, oShipController, "Check if ship all needs to get tracknumbers")
 			.then(function(aHandlingUnits, mSession) {
-				debugger;
 				var aHus = [];
 				if (aHandlingUnits) {
 					aHus = aHus.concat(aHandlingUnits.map(oHu => oHu.HuId));

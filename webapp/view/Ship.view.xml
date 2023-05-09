@@ -96,6 +96,12 @@
 					<layoutData>
 						<OverflowToolbarLayoutData priority="AlwaysOverflow" id="pod---ship--delete--layout"/>
 					</layoutData>
+				</Button>				
+				<Button text="{i18n>cancelShipHu}" id="cancel-ship-unit" press="onCancelShipHU"
+					enabled="{parts:[{path:'global>/currentShipHandlingUnit'}, {path:'global>/currentShipHandlingUnitClosed'},{path:'global>/pendingTaskNumber'}], formatter:'.formatDeleteBtn'}">
+					<layoutData>
+						<OverflowToolbarLayoutData priority="AlwaysOverflow" id="pod---ship--cancel--layout"/>
+					</layoutData>
 				</Button>
 			</OverflowToolbar>
 		</custom:Container>

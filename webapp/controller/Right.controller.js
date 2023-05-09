@@ -25,11 +25,13 @@ sap.ui.define([
 	"sap/m/MessageItem",
 	"sap/m/MessageView",
 	"sap/m/Dialog",
-	"sap/m/Button"
+	"sap/m/Button",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
 ], function (Controller, Global, Service, Message, Util, MaterialModel, MaterialHelper, TableItemsHelper,
 	JSONModel, ODataHelper, Const, Cache, CustomError, ValueColor, ValueState, MessageBox, ItemWeight, AdvancedShipTableSetting,
 	ColumnSettingsHelper, PackingMode, PackingModeModel, BasicShipTableSetting, InternalShipTableSetting, MessageItem, MessageView, 
-	Dialog, Button) {
+	Dialog, Button, Filter, FilterOperator) {
 	"use strict";
 	var quantityInput = "quantity_input";
 	var tabIdPrefix = "shipHU-";
@@ -726,7 +728,42 @@ sap.ui.define([
 		onRemoveClosedShipHU: function () {
 			this.getWorkFlowFactory().getShipHUCloseWorkFlow().run(true);
 		},
+		onCancelShipHU: function() {var oView = this.getView();
+			var oDialog = oView.byId("cancelShipmentDialog");
+			if (!oDialog) {
+				oDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.CancelShipmentDialog", this);
+				oDialog.setModel(new JSONModel({
+					selectedKey: "01"
+				}), "filterSelectCSD")
+				oView.addDependent(oDialog);
+			}
+			oDialog.open();
+		},
 		/********   Begin Create shipping hu work flow   ********/
+
+		dialogClose: function(id) {
+			var oDialog = this.getView().byId(id);
+			if (oDialog) {
+				oDialog.close();
+			}
+		},
+
+		onCancelShipmentDialog: function() {
+			this.dialogClose("cancelShipmentDialog");
+		},
+
+		onConfirmShipmentDialog: function() {
+			this.getWorkFlowFactory().getCancelShipmentWorkflow().run();
+		},
+
+		onBeforeShipDataSearch: function(oEvent) {
+			var oWarehouseFilter = new Filter({
+				path:"Lgnum", 
+				operator: FilterOperator.EQ, 
+				value1: Global.getWarehouseNumber()
+			});
+			oEvent.getParameter("bindingParams").filters.push(oWarehouseFilter);
+		},
 
 		updateParameterAfterCreation: function (preResult, mSession) {
 			var sShipHUId = preResult.HuId;

@@ -38,6 +38,7 @@ sap.ui.define([
 			"getUpdateMiscCarrierWorkFlow",
 			"getRateShopsWorkFlow",
 			"getUpdateTrackingNumberWorkFlow",
+			"getCancelShipmentWorkflow"
 		],
 		abstract: true,
 		final: false,

@@ -52,6 +52,21 @@
                     </Collection>
                 </Annotation>
             </Annotations>
+            <Annotations Target="SAP.ShipData">
+                <Annotation Term="UI.LineItem" >
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Docno"/>
+                        </Record>
+                        <Record Type="UI.DataField">                            
+                            <PropertyValue Property="Value" Path="Exidv"/>
+                        </Record>
+                        <Record Type="UI.DataField">                            
+                            <PropertyValue Property="Value" Path="Trackingnum"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

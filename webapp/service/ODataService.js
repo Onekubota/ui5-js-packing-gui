@@ -185,6 +185,25 @@ sap.ui.define([
 				urlParameters: oURLParameters
 			});
 		},
+
+		cancelShipHandlingUnit: function () {
+			var oURLParameters = ODataHelper.getCloseShipHandlingUnitParameters();
+			return this.getPromise("/CancelShipment", CREATE, {}, {
+				urlParameters: oURLParameters
+			});
+		},
+
+		cancelShipHandlingUnits: function (aHuids) {
+			var aPromises = aHuids.map(function(oHu) {
+				var oURLParameters = ODataHelper.getCloseShipHandlingUnitParametersById(oHu.Exidv);
+				return this.getPromise("/CancelShipment", CREATE, {}, {
+					urlParameters: oURLParameters
+				});
+			}, this);
+
+			return Promise.all(aPromises);
+		},
+
 		getScaleWeight: function () {
 			var mData = ODataHelper.getScaleWeightData();
 			return this.getPromise("/ScaleWeightSet", CREATE, mData);
