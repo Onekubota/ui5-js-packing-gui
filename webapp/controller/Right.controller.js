@@ -732,6 +732,10 @@ sap.ui.define([
 			var oDialog = oView.byId("cancelShipmentDialog");
 			if (!oDialog) {
 				oDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.CancelShipmentDialog", this);
+				oDialog.attachAfterClose(function() {
+					this.getView().byId("cancelShipFilterBar").fireClear();
+					// this.getView().byId("cancelShipSmartTable").removeAllItems();
+				}, this);
 				oDialog.setModel(new JSONModel({
 					selectedKey: "01"
 				}), "filterSelectCSD")

@@ -1,6 +1,6 @@
 <core:FragmentDefinition id="pod---updatetrknum--fragement" xmlns="sap.m" xmlns:core="sap.ui.core">
 	<Dialog id="updateTrackNumberDialog" title="{i18n>updateTrackNumberDialogTitle}" draggable="true"
-		contentWidth="60%" afterOpen="onScanTrackNumber" afterClose="onTrackNumberDialogClose">
+		contentWidth="60%" afterOpen="onScanTrackNumber" afterClose="onTrackNumberDialogClose" busyIndicatorDelay="0">
 		<Table id="upd-trk-num-tab" width="auto" noDataText="No data" items="{path: 'trackNumberModel>/'}">
                 <columns>
                     <Column id="upd-trk-num-tab-col-shiphu" width="auto">

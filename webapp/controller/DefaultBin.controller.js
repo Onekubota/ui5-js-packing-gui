@@ -29,19 +29,17 @@ sap.ui.define([
 			this.setBusy(true);
 			var oRunTimePromise = Service.getRuntimeEnvironment()
 				.then(function (aResult) {
-					if (Util.isEmpty(Global.getWarehouseNumber())) {
-						// this.oWorkCenterModel.setData([]);
-						// this.oStorageBinModel.setData([]);						
+					if (Util.isEmpty(Global.getWarehouseNumber())) {			
 						if (aResult[0].EWMWarehouse && aResult[0].EWMWarehouse !== "") {
 							Global.setWarehouseNumber(aResult[0].EWMWarehouse);
-							Global.setSelectedFeatureSet(aResult[0].PackMode);
 						} else {
 							this.displayWarehouseMissedMessage();
 						}
 					} else {
 						//delay purpose, otherwise view not attached yet.
 						this.bindAudioAggregation();
-					}
+					}					
+					Global.setSelectedFeatureSet(aResult[0].PackMode);
 					Global.setIsOnCloud(aResult[0].IsS4Cloud);
 					if (!aResult[0].IsS4Cloud && PackingModeHelper.getSelectedMode() !== Const.INTERNAL_MODE) {
 						this.initPackingModeModel();

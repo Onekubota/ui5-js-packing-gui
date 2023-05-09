@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns:smarttable="sap.ui.comp.smarttable" xmlns:sfb="sap.ui.comp.smartfilterbar" id="pod---cancelshipmentdialog--fragmentdefinition" xmlns="sap.m" xmlns:core="sap.ui.core">
-	<Dialog id="cancelShipmentDialog" title="{i18n>cancelShipHu}" stretch="true" busy="{global>/busy}">
+	<Dialog id="cancelShipmentDialog" title="{i18n>cancelShipHu}" stretch="true" busy="{global>/busy}" busyIndicatorDelay="0">
 		<sfb:SmartFilterBar id="cancelShipFilterBar" entitySet="ShipDataSet" showClearOnFB="true">
 			<sfb:controlConfiguration>
 				<sfb:ControlConfiguration
@@ -39,7 +39,7 @@
 					filterType="single"/>
 			</sfb:controlConfiguration>
 		</sfb:SmartFilterBar>
-		<smarttable:SmartTable id="cancelShipSmartTable" entitySet="ShipDataSet"
+		<smarttable:SmartTable id="cancelShipSmartTable" entitySet="ShipDataSet" useExportToExcel="false" showTablePersonalisation="false"
 			tableType="ResponsiveTable" smartFilterId="cancelShipFilterBar" beforeRebindTable="onBeforeShipDataSearch">
 			<Table id="cancelShipSmartTable--inner" mode="MultiSelect"/>
 		</smarttable:SmartTable>
