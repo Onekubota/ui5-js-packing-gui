@@ -63,7 +63,6 @@
 					value="{
 						path: 'EWMStorageBin'
 					}"
-					change="onCreateShippingHU"
 				/>
 			</layout:Grid>
 		</form:SimpleForm>

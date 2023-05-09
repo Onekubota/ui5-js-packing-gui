@@ -671,9 +671,10 @@ sap.ui.define([
 					var bin = Global.getBin();
 					if (!bin || bin.trim() === "") {
 						this.focus("bin-input");
-					} else {
-						this.onShipHUIDSubmit({});
-					}
+					} 
+					// else {
+					// 	this.onShipHUIDSubmit({});
+					// }
 				} else {
 					if (!Util.isEmpty(sInput)) {
 						this.updateInputWithError("other-material-combo", this.getI18nText("incorrectMaterial"));

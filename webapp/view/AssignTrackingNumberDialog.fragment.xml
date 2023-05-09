@@ -5,13 +5,15 @@
                 <columns>
                     <Column id="upd-trk-num-tab-col-shiphu" width="auto">
                         <header>
-                            <Text text="Shipping Hu" width="auto" maxLines="1" wrapping="false"/>
+                            <Text id="upd-trk-num-tab-col-shiphu-col" 
+                                text="{i18n>shipHuText}" width="auto" maxLines="1" wrapping="false"/>
                         </header>
                         <footer/>
                     </Column>
                     <Column id="upd-trk-num-tab-col-trknum" width="auto">
                         <header>
-                            <Text text="{i18n>trackNumberColText}" width="auto"/>
+                            <Text id="upd-trk-num-tab-col-trknum-col"
+                                text="{i18n>trackNumberColText}" width="auto"/>
                         </header>
                         <footer/>
                     </Column>
