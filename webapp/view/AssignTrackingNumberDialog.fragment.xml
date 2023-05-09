@@ -5,15 +5,13 @@
                 <columns>
                     <Column id="upd-trk-num-tab-col-shiphu" width="auto">
                         <header>
-                            <Text id="upd-trk-num-tab-col-shiphu-col" 
-                                text="{i18n>shipHuText}" width="auto" maxLines="1" wrapping="false"/>
+                            <Text text="{i18n>shipHuText}" width="auto" maxLines="1" wrapping="false"/>
                         </header>
                         <footer/>
                     </Column>
                     <Column id="upd-trk-num-tab-col-trknum" width="auto">
                         <header>
-                            <Text id="upd-trk-num-tab-col-trknum-col"
-                                text="{i18n>trackNumberColText}" width="auto"/>
+                            <Text text="{i18n>trackNumberColText}" width="auto"/>
                         </header>
                         <footer/>
                     </Column>
@@ -37,11 +35,11 @@
                     </ColumnListItem>
                 </items>
             </Table>
-		<MessageStrip id="empty-material-msg-strip" text="{i18n>materialEmptyMsg}" visible="false" type="Error" 
+		<MessageStrip id="empty-material-msg-strip-asn" text="{i18n>materialEmptyMsg}" visible="false" type="Error" 
 			class="sapUiMediumMarginBottom"></MessageStrip>
 		<buttons>
-			<Button text="{i18n>updTrackNumbers}" id="create" type="Emphasized" press="onUpdateTrackingNumbers"/>
-			<Button text="{i18n>cancel}" id="cancel" press="onCancelDialog"/>
+			<Button text="{i18n>updTrackNumbers}" id="assign-trk-create" type="Emphasized" press="onUpdateTrackingNumbers"/>
+			<Button text="{i18n>cancel}" id="assign-trk-cancel" press="onCancelDialog"/>
 		</buttons>
 	</Dialog>
 </core:FragmentDefinition>
