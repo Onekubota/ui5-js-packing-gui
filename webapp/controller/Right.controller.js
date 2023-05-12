@@ -580,7 +580,8 @@ sap.ui.define([
 		},
 		handleUnpackEnable: function () {
 			if (Global.getPendingTaskNumber() === 0 && !Global.getCurrentShipHandlingUnitClosed() && !Util.isEmpty(Global.getSourceId()) && !
-				this.oItemHelper.isEmpty() && this.oItemHelper.getHighLightedItemIndex() === 0) {
+				this.oItemHelper.isEmpty() && this.oItemHelper.getHighLightedItemIndex() === 0 && 
+				Global.getSourceType() !== Const.SOURCE_TYPE_ODO ) {
 				Global.setUnpackEnable(true);
 			} else {
 				Global.setUnpackEnable(false);
