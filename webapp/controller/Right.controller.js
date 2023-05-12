@@ -662,6 +662,10 @@ sap.ui.define([
 			var sInput = Util.trim(oEvent.getParameter("newValue"));
 			setTimeout(function () {
 				var oElement = this.byId("other-material-combo");
+				var text = oElement._sInputValueBeforeOpen;
+				if (text.trim() !== "") {
+					return;
+				}
 				var sMaterialId = oElement.getSelectedKey();
 				if (!Util.isEmpty(sMaterialId)) {
 					this.updateInputWithDefault("other-material-combo");
