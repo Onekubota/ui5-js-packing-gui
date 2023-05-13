@@ -24,7 +24,6 @@ sap.ui.define([
 			}, this);
 			if (aErrors.length > 0) {				
 				this.showUpdateTrackingBackendErrors(aErrors);
-				return;
 			}
 			if (aSuccess.length > 0) {
 				this.oTrkNumberDialog.resolve(aSuccess);				

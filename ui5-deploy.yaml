@@ -14,10 +14,16 @@ builder:
       afterTask: generateCachebusterInfo
       configuration:
         target:
-          url: https://saps4dapp.kubota-kna.com:8003/
+          url: https://saps4dapp.kubota-kna.com:8003/sap/bc/ui2/flp
           client: "200"
+          auth: basic
+        credentials:
+          username: env:KUBOTA_200_USER
+          password: env:KUBOTA_200_PASS
         app:
           name: ZEWMPACKGUI
           description: EWM Packing Gui
           package: ZEWM_PKG_PACK_GUI
           transport: S4DK967746
+        exclude:
+          - /test/
