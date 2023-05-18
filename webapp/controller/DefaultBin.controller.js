@@ -25,7 +25,7 @@ sap.ui.define([
 		sRouteName: "default",
 		init: function () {
 			this.setModel(PackingMode, "packingMode");
-
+			this.initBinOnSapEnter();
 			this.setBusy(true);
 			var oRunTimePromise = Service.getRuntimeEnvironment()
 				.then(function (aResult) {
@@ -292,6 +292,23 @@ sap.ui.define([
 			}
 
 		},
+
+		initBinOnSapEnter: function() {
+			this.getView().byId("pod---defaultbin--storagebin--input")
+				.attachInnerControlsCreated(function(oEvent) {
+					var oControl = oEvent.getSource().getInnerControls()[0];
+					var onEnterFn = oControl.onsapenter.bind(oControl);
+					var newFn = function() {
+						onEnterFn();
+						var value = oControl.getValue();
+						if (value.trim() === "") {
+							this.onStartPacking();
+						}
+					}.bind(this);
+					oEvent.getSource().getInnerControls()[0].onsapenter = newFn;
+			}.bind(this));
+		},
+
 		onVerifyWorkCenter: function (sValue) {
 			var oInput = this.byId(workCenterInputId);
 			if (sValue.length > 4) {

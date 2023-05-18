@@ -22,6 +22,7 @@ sap.ui.define([
 		"productId": "",
 		"asyncMode": false,
 		"pendingTaskNumber": 0,
+		"hasExportDelivery": false,
 		//tell if a source handling unit/bin or ship handling unit is displaying in the source side
 		"isPickHUInSourceSide": true,
 		"selectedFeatureSet": "",

@@ -5,6 +5,15 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 	return {
 		init: function (oDataModel) {
 			_oModel = oDataModel;
+			var aDeferredGroups = _oModel.getDeferredGroups();
+			aDeferredGroups.push("groupCommodity");
+			_oModel.setDeferredGroups(aDeferredGroups);
+			var oChangeGroups = _oModel.getChangeGroups();
+			oChangeGroups.Commodity = { 
+				groupId: "groupCommodity",
+				changeSetId: "groupCommodityChanges"
+			};
+			_oModel.setChangeGroups(oChangeGroups);
 			return this;
 		},
 		destroy: function () {

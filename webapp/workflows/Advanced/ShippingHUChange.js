@@ -30,9 +30,9 @@ sap.ui.define([
 				}
 			}, oSourceController, "clear source if needed")
 			.then(function (preResult, mSession) {
-					this.setBusy(true);
-					return Service.getHUSet(mSession.sHuId, Const.SHIP_TYPE_HU);
-				},
+				this.setBusy(true);
+				return Service.getHUSet(mSession.sHuId, Const.SHIP_TYPE_HU);
+			},
 				oShipController)
 			.then(function (preResult, mSession) {
 				mSession.NetWeight = preResult.NetWeight;
@@ -45,6 +45,10 @@ sap.ui.define([
 				}
 			}, oShipController)
 			.then(function (preResult, mSession) {
+				var hasExpDlv =
+					preResult.filter(odo => odo.HasExportDelivery === true).length > 0
+						? true : false;
+				Global.setHasExportDelivery(hasExpDlv);
 				this.setBusy(false);
 				this.oItemHelper.setItems(preResult);
 				this.createNewTab(mSession.sHuId, Const.TAB.ADVANCED);

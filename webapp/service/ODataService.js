@@ -158,6 +158,10 @@ sap.ui.define([
 			});
 		},
 
+		submitChanges: function(mParams) {
+			_oModel.submitChanges(mParams);
+		},
+
 		/**
 		 * get exception list
 		 *
@@ -264,7 +268,8 @@ sap.ui.define([
 								"CarrierService",
 								"CarrierServiceId",
 								"IsMiscCarrier",
-								"MiscCarrier"
+								"MiscCarrier",
+								"HasExportDelivery"
 							].forEach((key) => oItem[key] = oODO[key]);
 						}
 					});

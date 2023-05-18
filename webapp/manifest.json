@@ -29,11 +29,11 @@
                 "uri": "/sap/opu/odata/sap/ZSCWM_PACK_OUTBDLV_SRV",
                 "type": "OData",
                 "settings": {
-                    "odataVersion": "2.0",
                     "annotations": [
                         "annotation0"
                     ],
-                    "localUri": "localService/ZSCWM_PACK_OUTBDLV_SRV/metadata.xml"
+                    "localUri": "localService/ZSCWM_PACK_OUTBDLV_SRV/metadata.xml",
+                    "odataVersion": "2.0"
                 }
             },
             "annotation0": {

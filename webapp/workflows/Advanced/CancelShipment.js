@@ -18,6 +18,9 @@ sap.ui.define([
 			.then(function (result, mSession) {
 				result.forEach(function (oHu) {
 					var sShipHU = oHu.HuId;
+					if (oHu.MsgVar.trim() !== "") {
+						Message.addSuccess(oHu.MsgVar);
+					}
 					this.getWorkFlowFactory().getShipHUSelectionWorkFlow().run(sShipHU);
 				}, this);
 				this.onCancelShipmentDialog();

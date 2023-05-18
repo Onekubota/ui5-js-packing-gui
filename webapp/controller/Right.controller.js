@@ -772,7 +772,13 @@ sap.ui.define([
 				operator: FilterOperator.EQ, 
 				value1: Global.getWarehouseNumber()
 			});
-			oEvent.getParameter("bindingParams").filters.push(oWarehouseFilter);
+			var oPackStation = new Filter({
+				path:"Lgnum", 
+				operator: FilterOperator.EQ, 
+				value1: Global.getPackStation()
+			});
+			var aFilters = oEvent.getParameter("bindingParams").filters;
+			oEvent.getParameter("bindingParams").filters = aFilters.concat([oWarehouseFilter, oPackStation]);;
 		},
 
 		updateParameterAfterCreation: function (preResult, mSession) {
@@ -1399,7 +1405,57 @@ sap.ui.define([
 				oModel.setProperty(oContextPath + "/Status", sap.ui.core.MessageType.Success);
 			}
 		},
-
+		onExportData: function() {
+			var oView = this.getView();
+			var oDialog = oView.byId("CommodityChangeDialog");
+			if (!oDialog) {
+				oDialog = sap.ui.xmlfragment(oView.getId(), "zscm.ewm.packoutbdlvs1.view.CommodityChangeDialog", this);
+				// oDialog.setModel(new JSONModel({
+				// 	selectedKey: "01"
+				// }), "filterSelectCSD")
+				oView.addDependent(oDialog);
+			}
+			oDialog.open();
+		},
+		onCommodityChangeCancel: function() {
+			var oView = this.getView();
+			var oDialog = oView.byId("CommodityChangeDialog");
+			if (oDialog) {
+				oDialog.close();
+			}
+		},
+		onAfterOpenExportData: function() {
+			var oView = this.getView();
+			oView.byId("CommodityChangeSmartTable").rebindTable();
+		},
+		onBeforeCommodityGetData: function(oEvent) {
+			var oWarehouseFilter = new Filter({
+				path:"Lgnum", 
+				operator: FilterOperator.EQ, 
+				value1: Global.getWarehouseNumber()
+			});
+			var oShipHuid = new Filter({
+				path:"Huid", 
+				operator: FilterOperator.EQ, 
+				value1: Global.getCurrentShipHandlingUnit()
+			});
+			
+			oEvent.getParameter("bindingParams").filters = [oWarehouseFilter, oShipHuid];
+		},
+		onCommodityChangeUpdate: function() {
+			this.setBusy(true);
+			Service.submitChanges({
+				groupId: "groupCommodity",
+				success: function() {
+					this.setBusy(false);
+					Message.addSuccess(this.getI18nText("CommodityUpdateSuccess"));
+					this.onCommodityChangeCancel();
+				}.bind(this),
+				error: function() {
+					this.setBusy(false);
+				}.bind(this)
+			});
+		},
 		formatShipHUIdRequired: function (sSelectedMaterialId) {
 			if (!Util.isEmpty(sSelectedMaterialId) && MaterialHelper.IsSelectedMaterialExternal()) {
 				return true;
@@ -1414,6 +1470,12 @@ sap.ui.define([
 		},
 		formatDeleteBtn: function (sShipHU, bShipHUClosed, iPendingTaskNumber) {
 			if (bShipHUClosed || iPendingTaskNumber > 0) {
+				return false;
+			}
+			return !Util.isEmpty(sShipHU);
+		},
+		formatExprtDataBtn: function (sShipHU, bShipHUClosed, iPendingTaskNumber, bHasExpDlv) {
+			if (bShipHUClosed || iPendingTaskNumber > 0 || !bHasExpDlv) {
 				return false;
 			}
 			return !Util.isEmpty(sShipHU);

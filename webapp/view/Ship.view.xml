@@ -102,6 +102,12 @@
 					<layoutData>
 						<OverflowToolbarLayoutData priority="AlwaysOverflow" id="pod---ship--cancel--layout"/>
 					</layoutData>
+				</Button>		
+				<Button text="{i18n>exportData}" id="expdata-ship-unit" press="onExportData"
+					enabled="{parts:[{path:'global>/currentShipHandlingUnit'}, {path:'global>/currentShipHandlingUnitClosed'},{path:'global>/pendingTaskNumber'},{path:'global>/hasExportDelivery'}], formatter:'.formatExprtDataBtn'}">
+					<layoutData>
+						<OverflowToolbarLayoutData priority="AlwaysOverflow" id="pod---ship--export--layout"/>
+					</layoutData>
 				</Button>
 			</OverflowToolbar>
 		</custom:Container>

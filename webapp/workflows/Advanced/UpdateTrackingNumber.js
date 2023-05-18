@@ -20,6 +20,9 @@ sap.ui.define([
 			this.oTrkNumberDialog.setBusy(false);
 			aSuccess.forEach(function(data) {
 				var sShipHU = data.HuId;
+				if (data.MsgVar.trim() !== "") {
+					Message.addSuccess(data.MsgVar);
+				}
 				this.getWorkFlowFactory().getShipHUSelectionWorkFlow().run(sShipHU);
 			}, this);
 			if (aErrors.length > 0) {				

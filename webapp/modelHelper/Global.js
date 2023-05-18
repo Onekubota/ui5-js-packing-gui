@@ -188,8 +188,15 @@ sap.ui.define([
 			Model.setProperty("/asyncMode", bAsync);
 			return this;
 		},
+		setHasExportDelivery: function(bHas) {
+			Model.setProperty("/hasExportDelivery", bHas);
+			return this;
+		},
 		getAsyncMode: function () {
 			return Model.getProperty("/asyncMode");
+		},
+		getHasExportDelivery: function() {
+			return Model.getProperty("/hasExportDelivery");
 		},
 		getPendingTaskNumber: function () {
 			return Model.getProperty("/pendingTaskNumber");
