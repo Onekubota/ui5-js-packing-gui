@@ -773,7 +773,7 @@ sap.ui.define([
 				value1: Global.getWarehouseNumber()
 			});
 			var oPackStation = new Filter({
-				path:"Lgnum", 
+				path:"PackStation", 
 				operator: FilterOperator.EQ, 
 				value1: Global.getPackStation()
 			});
