@@ -136,6 +136,9 @@ sap.ui.define([
 
 		oWorkFlow
 			.errors()
+			.subscribe(Const.ERRORS.HU_SHIP_ASSIGNED, function (sError) {
+				this.updateInputWithError(Const.ID.SOURCE_INPUT, sError);
+			}, oSourceController)
 			.subscribe(Const.ERRORS.HU_NOT_EXIST, function (sError) {
 				this.updateInputWithError(Const.ID.SOURCE_INPUT, sError);
 			}, oSourceController)
