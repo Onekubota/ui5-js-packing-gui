@@ -111,10 +111,10 @@ sap.ui.define([
 		getExceptionEnable: function () {
 			return Model.getProperty("/exceptionEnable");
 		},
-		setCurrentShipHandlingUnitTrackNumber: function(sTrackNumber) {
+		setCurrentShipHandlingUnitTrackNumber: function (sTrackNumber) {
 			Model.setProperty("/currentShipHandlingUnitTrackNumber", sTrackNumber);
 		},
-		getCurrentShipHandlingUnitTrackNumber: function() {
+		getCurrentShipHandlingUnitTrackNumber: function () {
 			return Model.getProperty("/currentShipHandlingUnitTrackNumber");
 		},
 		setPackAllEnable: function (bEnable) {
@@ -188,14 +188,14 @@ sap.ui.define([
 			Model.setProperty("/asyncMode", bAsync);
 			return this;
 		},
-		setHasExportDelivery: function(bHas) {
+		setHasExportDelivery: function (bHas) {
 			Model.setProperty("/hasExportDelivery", bHas);
 			return this;
 		},
 		getAsyncMode: function () {
 			return Model.getProperty("/asyncMode");
 		},
-		getHasExportDelivery: function() {
+		getHasExportDelivery: function () {
 			return Model.getProperty("/hasExportDelivery");
 		},
 		getPendingTaskNumber: function () {
@@ -246,6 +246,15 @@ sap.ui.define([
 			});
 			Model.setProperty("/applicationFeatures", aFeatures);
 			return this;
+		},
+		getSerialNumberValidationFeature: function () {
+			var disabled = true;
+			var aAppFeatures = Model.getProperty("/applicationFeatures");
+			try {
+				disabled = aAppFeatures.filter(x => x.type === "C")[0].disabled;
+			} catch (error) {
+			}
+			return !disabled;
 		}
 	};
 });

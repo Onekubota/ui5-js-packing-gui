@@ -21,8 +21,9 @@ sap.ui.define([
 			}, oSourceController, "disable ui interaction")
 			.then(function (preResult, mSession) {
 				if (!Util.isEmpty(mSession.oProduct.SerialNumberRequiredLevel)) {
+					var bSerialValidation = Global.getSerialNumberValidationFeature();
 					if (!(mSession.oProduct.SerialNumberRequiredLevel === Const.SN_DOC_LEVEL_PROFILE_A && mSession.oProduct.EWMDeliveryDocumentCategory !== Const.DOCUMENT_CAT_OUTBOUND)) {
-						if (!(this.oItemHelper.getItemCountByProduct(mSession.oProduct.ProductName) === 1 && mSession.oProduct.SerialNumberRequiredLevel === Const.SERIAL_NUMBER_STOCK_LEVEL)) {
+						if (!((this.oItemHelper.getItemCountByProduct(mSession.oProduct.ProductName) === 1 && !bSerialValidation ) && mSession.oProduct.SerialNumberRequiredLevel === Const.SERIAL_NUMBER_STOCK_LEVEL)) {
 							if (this.oItemHelper.isReductionFirstItem()) {
 								var iRatio = this.oItemHelper.getAlternativeUOMRatio(mSession.oProduct);
 								var iReductAlterQuan = Util.parseNumber(this.oItemHelper.getItemReductionQtyByIndex(0));

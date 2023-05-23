@@ -783,8 +783,16 @@ sap.ui.define([
 			}
 		},
 
-		onSerialNumberExceptionChange: function (oEvent, sInputId) {
+		onSerialNumberExceptionChangeCustom: function (oEvent, sInputId) {
+			var bSerialValidation = Global.getSerialNumberValidationFeature();
+			this.onSerialNumberExceptionChange(oEvent, sInputId, bSerialValidation);
+		},
+
+		onSerialNumberExceptionChange: function (oEvent, sInputId, bSerialValidation) {
 			var sInput = Util.trim(oEvent.getParameter("newValue"));
+			if (bSerialValidation === undefined) {
+				bSerialValidation = false;
+			}
 			if (Util.isEmpty(sInput)) {
 				return;
 			}
@@ -792,8 +800,8 @@ sap.ui.define([
 				this.handleEntryLengthExceed(sInputId);
 				return;
 			}
-
-			if (SerialNumber.getSerialNumberCount() === this.oItemHelper.getItemBaseQtyByIndex(0) - 1) {
+			var l1 = bSerialValidation === true ? 0 : 1;
+			if (SerialNumber.getSerialNumberCount() === this.oItemHelper.getItemBaseQtyByIndex(0) - l1) {
 				var sErrorMsg = this.getI18nText("overPackErrorMsg", this.oItemHelper.getItemBaseQtyByIndex(0));
 				this.updateInputWithError(sInputId, sErrorMsg);
 				this.playAudio(Const.ERROR);
