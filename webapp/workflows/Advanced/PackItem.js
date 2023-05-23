@@ -172,6 +172,12 @@ sap.ui.define([
 			}, oSourceController, "handle pack all enable")
 			.then(function (preResult, mSession) {
 				this.delayCalledAdjustContainerHeight();
+			}, oShipController)
+			.then(function() {
+				var sShipHU = Global.getCurrentShipHandlingUnit();
+				if (sShipHU !== "") {
+					this.getWorkFlowFactory().getShipHUSelectionWorkFlow().run(sShipHU);
+				}
 			}, oShipController);
 
 		oWorkFlow
