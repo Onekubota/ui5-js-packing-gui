@@ -383,7 +383,9 @@ sap.ui.define([
 			});
 			var aPromises =  aHuData.map(function(oHu) {
 				return new Promise(function(resolve, reject) {
-					this.getPromise("/UpdateTrackNumber", CREATE, {}, {
+					this.getPromise("/UpdateTrackNumber", CREATE, {
+						groupId: "upd" + oHu.Huid,
+					}, {
 						urlParameters: oHu
 					})
 					.then(function(oData) {

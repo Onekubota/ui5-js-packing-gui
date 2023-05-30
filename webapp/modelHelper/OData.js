@@ -16,6 +16,11 @@ sap.ui.define(["zscm/ewm/packoutbdlvs1/utils/Util","zscm/ewm/packoutbdlvs1/utils
 			_oModel.setChangeGroups(oChangeGroups);
 			return this;
 		},
+		setUseBatch: function(bUse) {
+			if (_oModel) {
+				_oModel.setUseBatch(bUse);
+			}
+		},
 		destroy: function () {
 			_oModel = null;
 		},
